@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Apartment Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img src="logo.png" alt="AMS Logo">
+    </div>
+
+        <nav>
+            <button onclick="showSection('dashboard')">Dashboard</button>
+            <button onclick="showSection('apartments')">Apartments</button>
+            <button onclick="showSection('residents')">Residents</button>
+            <button onclick="showSection('familymembers')">Family Members</button>
+            <button onclick="showSection('payments')">Payments</button>
+            <button onclick="showSection('maintenancebills')">Maintenance Bills</button>
+            <button onclick="showSection('complaints')">Complaints</button>
+            <button onclick="showSection('parking')">Parking</button>
+            <button onclick="showSection('vehicles')">Vehicles</button>
+            <button onclick="showSection('visitors')">Visitors</button>
+            <button onclick="showSection('staff')">Staff</button>
+            <button onclick="showSection('gym')">Gym Membership</button>
+            <button onclick="showSection('gymattendance')">Gym Attendance</button>
+            <button onclick="showSection('amenities')">Amenities</button>
+            <button onclick="showSection('amenitybookings')">Amenity Bookings</button>
+            <button onclick="showSection('deliveries')">Deliveries</button>
+
+        </nav>
+         <button class="logout-btn" onclick="logout()">Logout</button>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <header>
+            <h1>Apartment Management System</h1>
+        </header>
+
+
+        
+        <!-- Dashboard -->
+<section id="dashboard" class="section active">
+
+    <div class="dashboard-header">
+        <div>
+            <h2>Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="dashboard-cards">
+
+    <div class="card" onclick="showSection('apartments')">
+        <h3>Apartments</h3>
+        <p id="apartmentCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('residents')">
+        <h3>Residents</h3>
+        <p id="residentCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('complaints')">
+        <h3>Complaints</h3>
+        <p id="complaintCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('staff')">
+        <h3>Staff</h3>
+        <p id="staffCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('maintenancebills')">
+        <h3>Maintenance Bills</h3>
+        <p id="billCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('parking')">
+        <h3>Parking Slots</h3>
+        <p id="parkingCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('gym')">
+        <h3>Gym Memberships</h3>
+        <p id="gymCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('maintenancebills')">
+        <h3>Pending Bills</h3>
+        <p id="pendingBillCount">0</p>
+    </div>
+
+    <div class="card" onclick="showSection('amenities')">
+        <h3>Amenities</h3>
+        <p id="amenityCount">0</p>
+    </div>
+
+</div>
+    <div class="recent-complaints">
+
+        <div class="recent-section-header">
+            <div>
+                <h2>Recent Complaints</h2>
+                <p>Latest unresolved resident complaints.</p>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Complaint ID</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="recentComplaintsBody"></tbody>
+        </table>
+
+    </div>
+
+</section>
+
+        <!-- Apartments -->
+        <section id="apartments" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Apartments</h2>
+            <p>Manage apartment details and occupancy.</p>
+        </div>
+
+        <button class="add-btn" onclick="showApartmentForm()">
+            + Add Apartment
+        </button>
+    </div>
+
+    <!-- Add Apartment Form -->
+    <div id="apartmentForm" class="form-container" style="display: none;">
+
+        <h3>Add Apartment</h3>
+
+        <input type="text" id="apartment_number"
+               placeholder="Apartment Number">
+
+        <input type="number" id="floor"
+               placeholder="Floor">
+
+        <input type="text" id="wing"
+               placeholder="Wing">
+
+        <input type="text" id="type"
+               placeholder="Type (2BHK / 3BHK)">
+
+        <input type="number" id="area_sqft"
+               placeholder="Area (sqft)">
+
+        <select id="status">
+            <option value="Occupied">Occupied</option>
+            <option value="Vacant">Vacant</option>
+        </select>
+
+        <button onclick="addApartment()">Save Apartment</button>
+
+        <button class="cancel-btn"
+                onclick="hideApartmentForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <!-- Apartment Table -->
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Apartment No.</th>
+                    <th>Floor</th>
+                    <th>Wing</th>
+                    <th>Type</th>
+                    <th>Area</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="apartmentTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Residents -->
+          <!--=====================================================================================-->
+        <section id="residents" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Residents</h2>
+            <p>Manage apartment residents.</p>
+        </div>
+
+        <button class="add-btn" onclick="showResidentForm()">
+            + Add Resident
+        </button>
+    </div>
+
+    <!-- Add Resident Form -->
+    <div id="residentForm" class="form-container" style="display: none;">
+
+        <h3>Add Resident</h3>
+
+        <input type="number" id="resident_apartment_id"
+               placeholder="Apartment ID">
+
+        <input type="text" id="resident_name"
+               placeholder="Name">
+
+        <input type="text" id="resident_phone"
+               placeholder="Phone">
+
+        <input type="email" id="resident_email"
+               placeholder="Email">
+
+        <input type="text" id="resident_occupation"
+               placeholder="Occupation">
+
+        <input type="text" id="resident_role"
+               placeholder="Role">
+
+        <label>Move-in Date</label>
+        <input type="date" id="resident_move_in_date">
+
+        <label>Move-out Date</label>
+        <input type="date" id="resident_move_out_date">
+
+        <button onclick="addResident()">Save Resident</button>
+
+        <button class="cancel-btn"
+                onclick="hideResidentForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <!-- Resident Table -->
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Apartment ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Occupation</th>
+                    <th>Role</th>
+                    <th>Move In</th>
+                    <th>Move Out</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="residentTableBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!--Family memebers-->
+ <!--=====================================================================================-->
+<section id="familymembers" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Family Members</h2>
+            <p>Manage family members of residents.</p>
+        </div>
+
+        <button class="add-btn" onclick="showFamilyForm()">
+            + Add Family Member
+        </button>
+    </div>
+
+    <div id="familyForm" class="form-container" style="display: none;">
+
+        <h3>Add Family Member</h3>
+
+        <input type="number" id="family_resident_id"
+               placeholder="Resident ID">
+
+        <input type="text" id="family_relationship"
+               placeholder="Relationship">
+
+        <input type="number" id="family_age"
+               placeholder="Age">
+
+        <input type="text" id="family_phone"
+               placeholder="Phone">
+
+        <button onclick="addFamilyMember()">
+            Save Family Member
+        </button>
+
+        <button class="cancel-btn" onclick="hideFamilyForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Relationship</th>
+                    <th>Age</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="familyTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Payments -->
+         <!--=======================================================================================-->
+        <section id="payments" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Payments</h2>
+            <p>Manage maintenance bill payments.</p>
+        </div>
+
+        <button class="add-btn" onclick="showPaymentForm()">
+            + Add Payment
+        </button>
+    </div>
+
+    <div id="paymentForm" class="form-container" style="display: none;">
+
+        <h3>Add Payment</h3>
+
+        <input
+            type="number"
+            id="payment_bill_id"
+            placeholder="Bill ID"
+        >
+
+        <label>Payment Date</label>
+        <input
+            type="date"
+            id="payment_date"
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            id="payment_amount"
+            placeholder="Amount"
+        >
+
+        <input
+            type="text"
+            id="payment_mode"
+            placeholder="Payment Mode (UPI / Cash / Card)"
+        >
+
+        <input
+            type="text"
+            id="payment_reference"
+            placeholder="Reference Number"
+        >
+
+        <button onclick="addPayment()">
+            Save Payment
+        </button>
+
+        <button class="cancel-btn" onclick="hidePaymentForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Bill ID</th>
+                    <th>Payment Date</th>
+                    <th>Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Reference Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="paymentTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Complaints -->
+         <!--=====================================================================================-->
+        <section id="complaints" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Complaints</h2>
+            <p>Manage resident complaints and their status.</p>
+        </div>
+
+        <button class="add-btn" onclick="showComplaintForm()">
+            + Add Complaint
+        </button>
+    </div>
+
+    <div id="complaintForm" class="form-container" style="display: none;">
+
+        <h3>Add Complaint</h3>
+
+        <input
+            type="number"
+            id="complaint_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="number"
+            id="complaint_staff_id"
+            placeholder="Assigned Staff ID (optional)"
+        >
+
+        <input
+            type="text"
+            id="complaint_category"
+            placeholder="Category"
+        >
+
+        <textarea
+            id="complaint_description"
+            placeholder="Description"
+        ></textarea>
+
+        <select id="complaint_priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+        </select>
+
+        <select id="complaint_status">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Solved">Solved</option>
+        </select>
+
+        <button onclick="addComplaint()">
+            Save Complaint
+        </button>
+
+        <button class="cancel-btn" onclick="hideComplaintForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Staff ID</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Resolved At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="complaintTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Parking -->
+          <!--=====================================================================================-->
+        <section id="parking" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Parking Slots</h2>
+            <p>Manage parking slots in the apartment.</p>
+        </div>
+
+        <button class="add-btn" onclick="showParkingForm()">
+            + Add Parking Slot
+        </button>
+    </div>
+
+    <div id="parkingForm" class="form-container" style="display: none;">
+
+        <h3>Add Parking Slot</h3>
+
+        <input
+            type="text"
+            id="parking_slot_number"
+            placeholder="Slot Number"
+        >
+
+        <input
+            type="text"
+            id="parking_type"
+            placeholder="Type (Car / Bike)"
+        >
+
+        <select id="parking_status">
+            <option value="Available">Available</option>
+            <option value="Occupied">Occupied</option>
+        </select>
+
+        <button onclick="addParkingSlot()">
+            Save Parking Slot
+        </button>
+
+        <button class="cancel-btn" onclick="hideParkingForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Slot Number</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="parkingTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!--vehicles-->
+ <!--=====================================================================================-->
+<section id="vehicles" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Vehicles</h2>
+            <p>Manage resident vehicles and parking assignments.</p>
+        </div>
+
+        <button class="add-btn" onclick="showVehicleForm()">
+            + Add Vehicle
+        </button>
+    </div>
+
+    <div id="vehicleForm" class="form-container" style="display: none;">
+
+        <h3>Add Vehicle</h3>
+
+        <input
+            type="number"
+            id="vehicle_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="number"
+            id="vehicle_parking_slot_id"
+            placeholder="Parking Slot ID (optional)"
+        >
+
+        <input
+            type="text"
+            id="vehicle_number"
+            placeholder="Vehicle Number"
+        >
+
+        <input
+            type="text"
+            id="vehicle_type"
+            placeholder="Vehicle Type (Car / Bike)"
+        >
+
+        <input
+            type="text"
+            id="vehicle_brand"
+            placeholder="Brand"
+        >
+
+        <input
+            type="text"
+            id="vehicle_model"
+            placeholder="Model"
+        >
+
+        <button onclick="addVehicle()">
+            Save Vehicle
+        </button>
+
+        <button class="cancel-btn" onclick="hideVehicleForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Parking Slot</th>
+                    <th>Vehicle Number</th>
+                    <th>Type</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="vehicleTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!--maintenance Bills-->
+ <!--=====================================================================================-->
+
+<section id="maintenancebills" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Maintenance Bills</h2>
+            <p>Manage apartment maintenance bills.</p>
+        </div>
+
+        <button class="add-btn" onclick="showMaintenanceBillForm()">
+            + Add Maintenance Bill
+        </button>
+    </div>
+
+    <div id="maintenanceBillForm" class="form-container" style="display: none;">
+
+        <h3>Add Maintenance Bill</h3>
+
+        <input
+            type="number"
+            id="bill_apartment_id"
+            placeholder="Apartment ID"
+        >
+
+        <label>Bill Month</label>
+        <input
+            type="date"
+            id="bill_month"
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            id="bill_amount"
+            placeholder="Amount"
+        >
+
+        <label>Due Date</label>
+        <input
+            type="date"
+            id="bill_due_date"
+        >
+
+        <select id="bill_status">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Overdue">Overdue</option>
+        </select>
+
+        <button onclick="addMaintenanceBill()">
+            Save Bill
+        </button>
+
+        <button class="cancel-btn" onclick="hideMaintenanceBillForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Apartment ID</th>
+                    <th>Bill Month</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="maintenanceBillTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+        <!-- Visitors -->
+          <!--=====================================================================================-->
+        <section id="visitors" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Visitors</h2>
+            <p>Manage apartment visitors and entry records.</p>
+        </div>
+
+        <button class="add-btn" onclick="showVisitorForm()">
+            + Add Visitor
+        </button>
+    </div>
+
+    <div id="visitorForm" class="form-container" style="display: none;">
+
+        <h3>Add Visitor</h3>
+
+        <input
+            type="number"
+            id="visitor_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="text"
+            id="visitor_name"
+            placeholder="Visitor Name"
+        >
+
+        <input
+            type="text"
+            id="visitor_phone"
+            placeholder="Phone"
+        >
+
+        <input
+            type="text"
+            id="visitor_purpose"
+            placeholder="Purpose"
+        >
+
+        <input
+            type="text"
+            id="visitor_vehicle_number"
+            placeholder="Vehicle Number (optional)"
+        >
+
+        <label>Entry Time</label>
+        <input
+            type="datetime-local"
+            id="visitor_entry_time"
+        >
+
+        <label>Exit Time</label>
+        <input
+            type="datetime-local"
+            id="visitor_exit_time"
+        >
+
+        <button onclick="addVisitor()">
+            Save Visitor
+        </button>
+
+        <button class="cancel-btn" onclick="hideVisitorForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Visitor Name</th>
+                    <th>Phone</th>
+                    <th>Purpose</th>
+                    <th>Vehicle No.</th>
+                    <th>Entry Time</th>
+                    <th>Exit Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="visitorTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Staff -->
+          <!--=====================================================================================-->
+        <section id="staff" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Staff</h2>
+            <p>Manage apartment staff members.</p>
+        </div>
+
+        <button class="add-btn" onclick="showStaffForm()">
+            + Add Staff
+        </button>
+    </div>
+
+    <div id="staffForm" class="form-container" style="display: none;">
+
+        <h3>Add Staff</h3>
+
+        <input
+            type="text"
+            id="staff_name"
+            placeholder="Name"
+        >
+
+        <input
+            type="text"
+            id="staff_phone"
+            placeholder="Phone"
+        >
+
+        <input
+            type="email"
+            id="staff_email"
+            placeholder="Email"
+        >
+
+        <input
+            type="text"
+            id="staff_type"
+            placeholder="Staff Type (Security / Maintenance)"
+        >
+
+        <label>Joining Date</label>
+        <input
+            type="date"
+            id="staff_joining_date"
+        >
+
+        <select id="staff_status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+
+        <button onclick="addStaff()">
+            Save Staff
+        </button>
+
+        <button class="cancel-btn" onclick="hideStaffForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Staff Type</th>
+                    <th>Joining Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="staffTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Gym MEMBERSHIP-->
+          <!--=====================================================================================-->
+        <section id="gym" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Gym Memberships</h2>
+            <p>Manage resident gym memberships.</p>
+        </div>
+
+        <button class="add-btn" onclick="showGymForm()">
+            + Add Membership
+        </button>
+    </div>
+
+    <div id="gymForm" class="form-container" style="display: none;">
+
+        <h3>Add Gym Membership</h3>
+
+        <input
+            type="number"
+            id="gym_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="text"
+            id="gym_plan_name"
+            placeholder="Plan Name"
+        >
+
+        <label>Start Date</label>
+        <input
+            type="date"
+            id="gym_start_date"
+        >
+
+        <label>End Date</label>
+        <input
+            type="date"
+            id="gym_end_date"
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            id="gym_fee"
+            placeholder="Fee"
+        >
+
+        <select id="gym_status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Expired">Expired</option>
+        </select>
+
+        <button onclick="addGymMembership()">
+            Save Membership
+        </button>
+
+        <button class="cancel-btn" onclick="hideGymForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Plan</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="gymTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!--Gym attendance-->
+ <!--=====================================================================================-->
+ <section id="gymattendance" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Gym Attendance</h2>
+            <p>Track resident gym check-ins and check-outs.</p>
+        </div>
+
+        <button class="add-btn" onclick="showGymAttendanceForm()">
+            + Add Attendance
+        </button>
+    </div>
+
+    <div id="gymAttendanceForm" class="form-container" style="display: none;">
+
+        <h3>Add Gym Attendance</h3>
+
+        <input
+            type="number"
+            id="attendance_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="number"
+            id="attendance_membership_id"
+            placeholder="Membership ID (optional)"
+        >
+
+        <label>Check In</label>
+        <input
+            type="datetime-local"
+            id="attendance_check_in"
+        >
+
+        <label>Check Out</label>
+        <input
+            type="datetime-local"
+            id="attendance_check_out"
+        >
+
+        <button onclick="addGymAttendance()">
+            Save Attendance
+        </button>
+
+        <button class="cancel-btn" onclick="hideGymAttendanceForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Membership ID</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="gymAttendanceTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Amenities -->
+          <!--=====================================================================================-->
+        <section id="amenities" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Amenities</h2>
+            <p>Manage apartment amenities.</p>
+        </div>
+
+        <button class="add-btn" onclick="showAmenityForm()">
+            + Add Amenity
+        </button>
+    </div>
+
+    <div id="amenityForm" class="form-container" style="display: none;">
+
+        <h3>Add Amenity</h3>
+
+        <input
+            type="text"
+            id="amenity_name"
+            placeholder="Amenity Name"
+        >
+
+        <textarea
+            id="amenity_description"
+            placeholder="Description"
+        ></textarea>
+
+        <input
+            type="text"
+            id="amenity_location"
+            placeholder="Location"
+        >
+
+        <input
+            type="number"
+            id="amenity_capacity"
+            placeholder="Capacity"
+        >
+
+        <select id="amenity_status">
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
+        </select>
+
+        <button onclick="addAmenity()">
+            Save Amenity
+        </button>
+
+        <button class="cancel-btn" onclick="hideAmenityForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="amenityTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!--amenity booking-->
+<!--==========================================================================================-->
+<section id="amenitybookings" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Amenity Bookings</h2>
+            <p>Manage resident bookings for apartment amenities.</p>
+        </div>
+
+        <button class="add-btn" onclick="showAmenityBookingForm()">
+            + Add Booking
+        </button>
+    </div>
+
+    <div id="amenityBookingForm" class="form-container" style="display: none;">
+
+        <h3>Add Amenity Booking</h3>
+
+        <input
+            type="number"
+            id="booking_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="number"
+            id="booking_amenity_id"
+            placeholder="Amenity ID"
+        >
+
+        <label>Booking Date</label>
+        <input
+            type="date"
+            id="booking_date"
+        >
+
+        <label>Start Time</label>
+        <input
+            type="time"
+            id="booking_start_time"
+        >
+
+        <label>End Time</label>
+        <input
+            type="time"
+            id="booking_end_time"
+        >
+
+        <select id="booking_status">
+            <option value="Booked">Booked</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Completed">Completed</option>
+        </select>
+
+        <button onclick="addAmenityBooking()">
+            Save Booking
+        </button>
+
+        <button class="cancel-btn" onclick="hideAmenityBookingForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Amenity ID</th>
+                    <th>Booking Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="amenityBookingTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+        <!-- Deliveries -->
+          <!--=====================================================================================-->
+        <section id="deliveries" class="section">
+
+    <div class="section-header">
+        <div>
+            <h2>Deliveries</h2>
+            <p>Manage resident package deliveries.</p>
+        </div>
+
+        <button class="add-btn" onclick="showDeliveryForm()">
+            + Add Delivery
+        </button>
+    </div>
+
+    <div id="deliveryForm" class="form-container" style="display: none;">
+
+        <h3>Add Delivery</h3>
+
+        <input
+            type="number"
+            id="delivery_resident_id"
+            placeholder="Resident ID"
+        >
+
+        <input
+            type="text"
+            id="delivery_person"
+            placeholder="Delivery Person"
+        >
+
+        <input
+            type="text"
+            id="delivery_company"
+            placeholder="Delivery Company"
+        >
+
+        <input
+            type="text"
+            id="delivery_package_details"
+            placeholder="Package Details"
+        >
+
+        <input
+            type="text"
+            id="delivery_vehicle_number"
+            placeholder="Vehicle Number (optional)"
+        >
+
+        <label>Arrival Time</label>
+        <input
+            type="datetime-local"
+            id="delivery_arrival_time"
+        >
+
+        <select id="delivery_status">
+            <option value="Pending">Pending</option>
+            <option value="Collected">Collected</option>
+        </select>
+
+        <button onclick="addDelivery()">
+            Save Delivery
+        </button>
+
+        <button class="cancel-btn" onclick="hideDeliveryForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident ID</th>
+                    <th>Delivery Person</th>
+                    <th>Company</th>
+                    <th>Package Details</th>
+                    <th>Vehicle No.</th>
+                    <th>Arrival Time</th>
+                    <th>Collected Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="deliveryTableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

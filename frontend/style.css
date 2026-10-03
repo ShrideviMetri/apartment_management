@@ -1,0 +1,829 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #222;
+    display: flex;
+}
+
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #1f2937;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 25px 15px;
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar button {
+    background: transparent;
+    border: none;
+    color: #d1d5db;
+    text-align: left;
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.sidebar button:hover {
+    background: #374151;
+    color: white;
+}
+
+
+/* Main content */
+.main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    padding: 30px;
+}
+
+header {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+header h1 {
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #6b7280;
+}
+
+
+/* Sections */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+}
+
+
+/* Dashboard cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.card p {
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    color: #222;
+}
+
+
+/* Buttons */
+.section > button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.section > button:hover {
+    background: #1d4ed8;
+}
+
+
+/* Data area */
+#apartmentData,
+#residentData,
+#paymentData,
+#complaintData,
+#parkingData,
+#visitorData,
+#staffData,
+#gymData,
+#amenityData,
+#deliveryData {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 100px;
+}
+
+/* Recent Complaints */
+.recent-complaints {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.recent-complaints h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.recent-complaints table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recent-complaints th,
+.recent-complaints td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.recent-complaints th {
+    background: #f9fafb;
+    color: #374151;
+    font-size: 14px;
+}
+
+.recent-complaints td {
+    font-size: 14px;
+}
+
+.recent-complaints tr:hover {
+    background: #f9fafb;
+}
+
+/* Complaint status badges */
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-in-progress {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-solved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* ================================
+   APARTMENTS
+================================ */
+/* ================================
+   PROFESSIONAL TABLE STYLE
+================================ */
+
+.table-container {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.table-container thead {
+    background: #f8fafc;
+}
+
+.table-container th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.table-container td {
+    padding: 15px 16px;
+    font-size: 14px;
+    color: #4b5563;
+    border-bottom: 1px solid #f1f5f9;
+    white-space: nowrap;
+}
+
+.table-container tbody tr {
+    transition: background 0.15s ease;
+}
+
+.table-container tbody tr:hover {
+    background: #f8fafc;
+}
+
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Action Buttons */
+
+.table-container button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 6px;
+    transition: 0.2s;
+}
+
+.table-container button:first-child {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.table-container button:first-child:hover {
+    background: #dbeafe;
+}
+
+.table-container button:last-child {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.table-container button:last-child:hover {
+    background: #fee2e2;
+}
+
+/* ================================
+   SECTION HEADER
+================================ */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    color: #1f2937;
+}
+
+.section-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* ================================
+   ADD BUTTON
+================================ */
+
+.add-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(37, 99, 235, 0.18);
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.22);
+    transform: translateY(-1px);
+}
+
+
+/* ================================
+   FORM
+================================ */
+
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-container h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #1f2937;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    color: #374151;
+    background: white;
+    outline: none;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+.form-container button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background: #1d4ed8;
+}
+
+.form-container .cancel-btn {
+    background: #f3f4f6;
+    color: #374151;
+    margin-left: 8px;
+}
+
+.form-container .cancel-btn:hover {
+    background: #e5e7eb;
+}
+
+/* ================================
+   FORM LABELS
+================================ */
+
+.form-container label {
+    display: block;
+    margin: 4px 0 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* Family Members */
+#familymembers .table-container td:first-child,
+#familymembers .table-container td:nth-child(2),
+#familymembers .table-container td:nth-child(4) {
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ================================
+   PAYMENTS
+================================ */
+
+#payments .table-container td:nth-child(4) {
+    font-weight: 600;
+    color: #111827;
+}
+
+#payments .table-container td:nth-child(5) {
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ================================
+   PARKING SLOTS
+================================ */
+
+#parking .table-container td:nth-child(2) {
+    font-weight: 600;
+    color: #374151;
+}
+
+#parking .table-container td:nth-child(3) {
+    color: #6b7280;
+}
+#parking .status-available {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#parking .status-occupied {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ================= VEHICLES ================= */
+
+#vehicles .table-container td:nth-child(2),
+#vehicles .table-container td:nth-child(3) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#vehicles .table-container td:nth-child(4) {
+    font-weight: 600;
+    color: #111827;
+}
+
+#vehicles .table-container td:nth-child(5) {
+    color: #4b5563;
+}
+
+#vehicles .table-container td:nth-child(6),
+#vehicles .table-container td:nth-child(7) {
+    color: #6b7280;
+}
+
+/* ================= MAINTENANCE BILLS ================= */
+
+#maintenancebills .table-container td:nth-child(2) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#maintenancebills .table-container td:nth-child(3),
+#maintenancebills .table-container td:nth-child(5) {
+    color: #6b7280;
+}
+
+#maintenancebills .table-container td:nth-child(4) {
+    font-weight: 600;
+    color: #111827;
+}
+#maintenancebills .status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+#maintenancebills .status-paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#maintenancebills .status-overdue {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ================= STAFF ================= */
+
+#staff .table-container td:nth-child(2) {
+    font-weight: 600;
+    color: #374151;
+}
+
+#staff .table-container td:nth-child(3),
+#staff .table-container td:nth-child(4) {
+    color: #6b7280;
+}
+
+#staff .table-container td:nth-child(5) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#staff .table-container td:nth-child(6) {
+    color: #6b7280;
+}
+#staff .status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#staff .status-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ================= COMPLAINTS ================= */
+
+#complaints .form-container textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+}
+
+#complaints .form-container textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+#complaints .table-container td:nth-child(2),
+#complaints .table-container td:nth-child(3) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#complaints .table-container td:nth-child(4) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#complaints .table-container td:nth-child(5) {
+    white-space: normal;
+    min-width: 220px;
+    max-width: 350px;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+#complaints .table-container td:nth-child(6) {
+    font-weight: 500;
+}
+/* ================= GYM MEMBERSHIPS ================= */
+
+#gym .table-container td:nth-child(2) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#gym .table-container td:nth-child(3) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#gym .table-container td:nth-child(4),
+#gym .table-container td:nth-child(5) {
+    color: #6b7280;
+}
+
+#gym .table-container td:nth-child(6) {
+    font-weight: 600;
+    color: #111827;
+}
+
+#gym .status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#gym .status-inactive {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+#gym .status-expired {
+    background: #fee2e2;
+    color: #991b1b;
+}
+/* ================= GYM ATTENDANCE ================= */
+
+#gymattendance .table-container td:nth-child(2),
+#gymattendance .table-container td:nth-child(3) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#gymattendance .table-container td:nth-child(4),
+#gymattendance .table-container td:nth-child(5) {
+    color: #6b7280;
+}
+/* ================= AMENITIES ================= */
+
+#amenities .form-container textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+}
+
+#amenities .form-container textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+#amenities .table-container td:nth-child(2) {
+    font-weight: 600;
+    color: #374151;
+}
+
+#amenities .table-container td:nth-child(3) {
+    white-space: normal;
+    min-width: 220px;
+    max-width: 350px;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+#amenities .table-container td:nth-child(4) {
+    color: #6b7280;
+}
+
+#amenities .table-container td:nth-child(5) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#amenities .status-available {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#amenities .status-unavailable {
+    background: #fee2e2;
+    color: #991b1b;
+}
+/* ================= AMENITY BOOKINGS ================= */
+
+#amenitybookings .table-container td:nth-child(2),
+#amenitybookings .table-container td:nth-child(3) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#amenitybookings .table-container td:nth-child(4) {
+    color: #6b7280;
+}
+
+#amenitybookings .table-container td:nth-child(5),
+#amenitybookings .table-container td:nth-child(6) {
+    color: #4b5563;
+}
+
+#amenitybookings .status-booked {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+#amenitybookings .status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+#amenitybookings .status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+/* ================= VISITORS ================= */
+
+#visitors .table-container td:nth-child(2) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#visitors .table-container td:nth-child(3) {
+    font-weight: 600;
+    color: #374151;
+}
+
+#visitors .table-container td:nth-child(4),
+#visitors .table-container td:nth-child(5),
+#visitors .table-container td:nth-child(6) {
+    color: #6b7280;
+}
+
+#visitors .table-container td:nth-child(7),
+#visitors .table-container td:nth-child(8) {
+    color: #4b5563;
+}
+/* ================= DELIVERIES ================= */
+
+#deliveries .table-container td:nth-child(2) {
+    font-weight: 500;
+    color: #374151;
+}
+
+#deliveries .table-container td:nth-child(3) {
+    font-weight: 600;
+    color: #374151;
+}
+
+#deliveries .table-container td:nth-child(4),
+#deliveries .table-container td:nth-child(5),
+#deliveries .table-container td:nth-child(6) {
+    color: #6b7280;
+}
+
+#deliveries .table-container td:nth-child(7),
+#deliveries .table-container td:nth-child(8) {
+    color: #4b5563;
+}
+
+#deliveries .status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+#deliveries .status-collected {
+    background: #dcfce7;
+    color: #166534;
+}
+.dashboard-cards .card {
+    cursor: pointer;
+}
+/* ================= SIDEBAR LOGO ================= */
+
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.sidebar-logo img {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
+.logout-btn {
+    width: 100%;
+    margin-top: 25px;
+    padding: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 7px;
+    background: white;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
