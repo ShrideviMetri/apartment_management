@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all bookings
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM AmenityBooking";
+    const sql = "SELECT * FROM amenitybooking";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO AmenityBooking
+        INSERT INTO amenitybooking
         (resident_id, amenity_id, booking_date, start_time, end_time, status)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
@@ -66,7 +66,7 @@ router.get("/:id", (req, res) => {
     const bookingId = req.params.id;
 
     const sql = `
-        SELECT * FROM AmenityBooking
+        SELECT * FROM amenitybooking
         WHERE booking_id = ?
     `;
 
@@ -103,7 +103,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE AmenityBooking
+        UPDATE amenitybooking
         SET resident_id = ?,
             amenity_id = ?,
             booking_date = ?,
@@ -149,7 +149,7 @@ router.delete("/:id", (req, res) => {
     const bookingId = req.params.id;
 
     const sql = `
-        DELETE FROM AmenityBooking
+        DELETE FROM amenitybooking
         WHERE booking_id = ?
     `;
 

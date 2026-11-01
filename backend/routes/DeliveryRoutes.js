@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all deliveries
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Delivery";
+    const sql = "SELECT * FROM delivery";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -33,7 +33,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Delivery
+        INSERT INTO delivery
         (resident_id, delivery_person, delivery_company, package_details,
          vehicle_number, arrival_time, collected_time, status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -70,7 +70,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const deliveryId = req.params.id;
 
-    const sql = "SELECT * FROM Delivery WHERE delivery_id = ?";
+    const sql = "SELECT * FROM delivery WHERE delivery_id = ?";
 
     db.query(sql, [deliveryId], (err, results) => {
         if (err) {
@@ -107,7 +107,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Delivery
+        UPDATE delivery
         SET resident_id = ?,
             delivery_person = ?,
             delivery_company = ?,
@@ -156,7 +156,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const deliveryId = req.params.id;
 
-    const sql = "DELETE FROM Delivery WHERE delivery_id = ?";
+    const sql = "DELETE FROM delivery WHERE delivery_id = ?";
 
     db.query(sql, [deliveryId], (err, result) => {
         if (err) {

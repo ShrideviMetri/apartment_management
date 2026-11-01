@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all complaints
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Complaint";
+    const sql = "SELECT * FROM complaint";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Complaint
+        INSERT INTO complaint
         (resident_id, assigned_staff_id, category, description, priority, status)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
@@ -65,7 +65,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const complaintId = req.params.id;
 
-    const sql = "SELECT * FROM Complaint WHERE complaint_id = ?";
+    const sql = "SELECT * FROM complaint WHERE complaint_id = ?";
 
     db.query(sql, [complaintId], (err, results) => {
         if (err) {
@@ -104,7 +104,7 @@ router.put("/:id", (req, res) => {
 
     if (status === "Solved") {
         sql = `
-            UPDATE Complaint
+            UPDATE complaint
             SET resident_id = ?,
                 assigned_staff_id = ?,
                 category = ?,
@@ -126,7 +126,7 @@ router.put("/:id", (req, res) => {
         ];
     } else {
         sql = `
-            UPDATE Complaint
+            UPDATE complaint
             SET resident_id = ?,
                 assigned_staff_id = ?,
                 category = ?,

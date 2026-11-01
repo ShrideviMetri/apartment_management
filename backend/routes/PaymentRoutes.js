@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all payments
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Payment";
+    const sql = "SELECT * FROM payment";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Payment
+        INSERT INTO payment
         (bill_id, payment_date, amount, payment_mode, reference_number)
         VALUES (?, ?, ?, ?, ?)
     `;
@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const paymentId = req.params.id;
 
-    const sql = "SELECT * FROM Payment WHERE payment_id = ?";
+    const sql = "SELECT * FROM payment WHERE payment_id = ?";
 
     db.query(sql, [paymentId], (err, results) => {
         if (err) {
@@ -97,7 +97,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Payment
+        UPDATE payment
         SET bill_id = ?,
             payment_date = ?,
             amount = ?,
@@ -140,7 +140,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const paymentId = req.params.id;
 
-    const sql = "DELETE FROM Payment WHERE payment_id = ?";
+    const sql = "DELETE FROM payment WHERE payment_id = ?";
 
     db.query(sql, [paymentId], (err, result) => {
         if (err) {

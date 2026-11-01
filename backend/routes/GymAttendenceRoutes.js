@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all attendance
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM GymAttendance";
+    const sql = "SELECT * FROM gymattendance";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO GymAttendance
+        INSERT INTO gymattendance
         (resident_id, membership_id, check_in, check_out)
         VALUES (?, ?, ?, ?)
     `;
@@ -62,7 +62,7 @@ router.get("/:id", (req, res) => {
     const attendanceId = req.params.id;
 
     const sql = `
-        SELECT * FROM GymAttendance
+        SELECT * FROM gymattendance
         WHERE attendance_id = ?
     `;
 
@@ -97,7 +97,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE GymAttendance
+        UPDATE gymattendance
         SET resident_id = ?,
             membership_id = ?,
             check_in = ?,
@@ -139,7 +139,7 @@ router.delete("/:id", (req, res) => {
     const attendanceId = req.params.id;
 
     const sql = `
-        DELETE FROM GymAttendance
+        DELETE FROM gymattendance
         WHERE attendance_id = ?
     `;
 

@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all staff
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Staff";
+    const sql = "SELECT * FROM staff";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Staff
+        INSERT INTO staff
         (name, phone, email, staff_type, joining_date, status)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
@@ -65,7 +65,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const staffId = req.params.id;
 
-    const sql = "SELECT * FROM Staff WHERE staff_id = ?";
+    const sql = "SELECT * FROM staff WHERE staff_id = ?";
 
     db.query(sql, [staffId], (err, results) => {
         if (err) {
@@ -100,7 +100,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Staff
+        UPDATE staff
         SET name = ?,
             phone = ?,
             email = ?,
@@ -145,7 +145,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const staffId = req.params.id;
 
-    const sql = "DELETE FROM Staff WHERE staff_id = ?";
+    const sql = "DELETE FROM staff WHERE staff_id = ?";
 
     db.query(sql, [staffId], (err, result) => {
         if (err) {

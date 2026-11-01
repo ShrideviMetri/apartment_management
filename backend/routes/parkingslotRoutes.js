@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all parking slots
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM ParkingSlot";
+    const sql = "SELECT * FROM parkingslot";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO ParkingSlot
+        INSERT INTO parkingslot
         (slot_number, type, status)
         VALUES (?, ?, ?)
     `;
@@ -59,7 +59,7 @@ router.put("/:id", (req, res) => {
     const parkingSlotId = req.params.id;
 
     const sql = `
-        UPDATE ParkingSlot
+        UPDATE parkingslot
         SET slot_number = ?, type = ?, status = ?
         WHERE parking_slot_id = ?
     `;
@@ -93,7 +93,7 @@ router.delete("/:id", (req, res) => {
     const parkingSlotId = req.params.id;
 
     const sql = `
-        DELETE FROM ParkingSlot
+        DELETE FROM parkingslot
         WHERE parking_slot_id = ?
     `;
 

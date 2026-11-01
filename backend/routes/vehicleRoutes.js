@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all vehicles
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Vehicle";
+    const sql = "SELECT * FROM vehicle";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Vehicle
+        INSERT INTO vehicle
         (resident_id, parking_slot_id, vehicle_number, vehicle_type, brand, model)
         VALUES (?, ?, ?, ?, ?,?)
     `;
@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const vehicleId = req.params.id;
 
-    const sql = "SELECT * FROM Vehicle WHERE vehicle_id = ?";
+    const sql = "SELECT * FROM vehicle WHERE vehicle_id = ?";
 
     db.query(sql, [vehicleId], (err, results) => {
         if (err) {
@@ -97,7 +97,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Vehicle
+        UPDATE vehicle
         SET resident_id = ?,
             parking_slot_id = ?,
             vehicle_number = ?,
@@ -141,7 +141,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const vehicleId = req.params.id;
 
-    const sql = "DELETE FROM Vehicle WHERE vehicle_id = ?";
+    const sql = "DELETE FROM vehicle WHERE vehicle_id = ?";
 
     db.query(sql, [vehicleId], (err, result) => {
         if (err) {

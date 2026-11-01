@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all maintenance bills
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM MaintenanceBill";
+    const sql = "SELECT * FROM maintenancebill";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO MaintenanceBill
+        INSERT INTO maintenancebill
         (apartment_id, bill_month, amount, due_date, status)
         VALUES (?, ?, ?, ?, ?)
     `;
@@ -64,7 +64,7 @@ router.get("/:id", (req, res) => {
     const billId = req.params.id;
 
     const sql = `
-        SELECT * FROM MaintenanceBill
+        SELECT * FROM maintenancebill
         WHERE bill_id = ?
     `;
 
@@ -100,7 +100,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE MaintenanceBill
+        UPDATE maintenancebill
         SET apartment_id = ?,
             bill_month = ?,
             amount = ?,
@@ -168,7 +168,7 @@ router.delete("/:id", (req, res) => {
 
         // Delete the bill if no payment exists
         const deleteSql = `
-            DELETE FROM MaintenanceBill
+            DELETE FROM maintenancebill
             WHERE bill_id = ?
         `;
 

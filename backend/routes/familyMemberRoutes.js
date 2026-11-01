@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all family members
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM FamilyMember";
+    const sql = "SELECT * FROM familymember";
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO FamilyMember
+        INSERT INTO familymember
         (resident_id, relationship, age, phone)
         VALUES (?, ?, ?, ?)
     `;
@@ -61,7 +61,7 @@ router.put("/:id", (req, res) => {
     const familyMemberId = req.params.id;
 
     const sql = `
-        UPDATE FamilyMember
+        UPDATE familymember
         SET relationship = ?, age = ?, phone = ?
         WHERE family_member_id = ?
     `;
@@ -96,7 +96,7 @@ router.delete("/:id", (req, res) => {
     const familyMemberId = req.params.id;
 
     const sql = `
-        DELETE FROM FamilyMember
+        DELETE FROM familymember
         WHERE family_member_id = ?
     `;
 

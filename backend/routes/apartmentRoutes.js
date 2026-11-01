@@ -56,7 +56,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Apartment
+        UPDATE apartment
         SET apartment_number = ?,
             floor = ?,
             wing = ?,
@@ -100,7 +100,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const apartmentId = req.params.id;
 
-    const sql = "DELETE FROM Apartment WHERE apartment_id = ?";
+    const sql = "DELETE FROM apartment WHERE apartment_id = ?";
 
     db.query(sql, [apartmentId], (err, result) => {
         if (err) {
@@ -134,7 +134,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Apartment
+        INSERT INTO apartment
         (apartment_number, floor, wing, type, area_sqft, status)
         VALUES (?, ?, ?, ?, ?, ?)
     `;

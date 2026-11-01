@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
     } = req.body;
 
     const sql = `
-        INSERT INTO Amenity
+        INSERT INTO amenity
         (name, description, location, capacity, status)
         VALUES (?, ?, ?, ?, ?)
     `;
@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
 router.get("/:id", (req, res) => {
     const amenityId = req.params.id;
 
-    const sql = "SELECT * FROM Amenity WHERE amenity_id = ?";
+    const sql = "SELECT * FROM amenity WHERE amenity_id = ?";
 
     db.query(sql, [amenityId], (err, results) => {
         if (err) {
@@ -97,7 +97,7 @@ router.put("/:id", (req, res) => {
     } = req.body;
 
     const sql = `
-        UPDATE Amenity
+        UPDATE amenity
         SET name = ?,
             description = ?,
             location = ?,
@@ -140,7 +140,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const amenityId = req.params.id;
 
-    const sql = "DELETE FROM Amenity WHERE amenity_id = ?";
+    const sql = "DELETE FROM amenity WHERE amenity_id = ?";
 
     db.query(sql, [amenityId], (err, result) => {
         if (err) {
