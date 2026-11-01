@@ -7,7 +7,7 @@ if (!token) {
 }
 
 
-const API = "http://localhost:5000/api";
+const API = "https://apartment-management-fljl.onrender.com/api";
 
 // ===============================
 // SHOW SECTION
