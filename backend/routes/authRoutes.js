@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
 
     try {
         const checkSql = `
-            SELECT * FROM ApartmentOwner
+            SELECT * FROM apartmentowner
             WHERE email = ? OR phone = ?
         `;
 
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const sql = `
-                INSERT INTO ApartmentOwner
+                INSERT INTO apartmentowner
                 (name, email, phone, password)
                 VALUES (?, ?, ?, ?)
             `;
@@ -87,7 +87,7 @@ router.post("/login", (req, res) => {
     }
 
     const sql = `
-        SELECT * FROM ApartmentOwner
+        SELECT * FROM apartmentowner
         WHERE email = ? OR phone = ?
     `;
 
