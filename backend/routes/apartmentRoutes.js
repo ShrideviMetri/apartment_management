@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all apartments
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Apartment";
+    const sql = "SELECT * FROM apartment";
 
     db.query(sql, (err, results) => {
         if (err) {
