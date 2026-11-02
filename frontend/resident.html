@@ -1030,7 +1030,7 @@ async function loadMaintenanceBills() {
 
     try {
         const response = await fetch(
-            "http://127.0.0.1:5000/api/maintenancebill/my",
+            "https://apartment-management-fljl.onrender.com/api/maintenancebill/my",
             {
                 method: "GET",
                 headers: {
@@ -2582,7 +2582,7 @@ async function loadAmenities() {
     try {
 
         const response = await fetch(
-            "http://127.0.0.1:5000/api/amenity"
+            "https://apartment-management-fljl.onrender.com/api/amenity"
         );
 
         const data = await response.json();
