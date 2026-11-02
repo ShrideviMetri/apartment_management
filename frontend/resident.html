@@ -793,7 +793,7 @@ async function loadResidentProfile() {
 
     try {
         const response = await fetch(
-            "http://apartment-management-fljl.onrender.com/api/resident/me/profile",
+            "https://apartment-management-fljl.onrender.com/api/resident/me/profile",
             {
                 method: "GET",
                 headers: {
@@ -853,7 +853,7 @@ async function loadAllApartments() {
 
         // Get logged-in resident's apartment ID
         const profileResponse = await fetch(
-            "http://apartment-management-fljl.onrender.com/api/resident/me/profile",
+            "https://apartment-management-fljl.onrender.com/api/resident/me/profile",
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -871,7 +871,7 @@ async function loadAllApartments() {
 
         // Fetch all apartments
         const response = await fetch(
-            "http://apartment-management-fljl.onrender.com/api/apartment"
+            "https://apartment-management-fljl.onrender.com/api/apartment"
         );
 
         const apartments = await response.json();
@@ -979,7 +979,7 @@ async function loadFamilyMembers() {
 
     try {
         const response = await fetch(
-            "http://apartment-management-fljl.onrender.com/api/familymember/my",
+            "https://apartment-management-fljl.onrender.com/api/familymember/my",
             {
                 method: "GET",
                 headers: {
