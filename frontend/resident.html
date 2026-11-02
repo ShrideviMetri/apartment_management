@@ -1,0 +1,3020 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS - Resident Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f6fa;
+    color: #263248;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    background: #172554;
+    color: white;
+    padding: 25px 15px;
+    overflow-y: auto;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 25px;
+}
+
+.sidebar h4 {
+    color: #94a3b8;
+    padding: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.sidebar a {
+    display: block;
+    padding: 13px 12px;
+    margin: 5px 0;
+    border-radius: 7px;
+    color: #dbeafe;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #2563eb;
+    color: white;
+}
+
+.main {
+    margin-left: 250px;
+    padding: 25px 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.topbar h2 {
+    font-size: 25px;
+}
+
+.user-info {
+    background: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0000000d;
+}
+
+.welcome {
+    background: linear-gradient(120deg, #1e40af, #3b82f6);
+    color: white;
+    padding: 30px;
+    border-radius: 13px;
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+    margin-bottom: 10px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: white;
+    padding: 23px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #0000000b;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid #edf0f5;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 16px #00000015;
+}
+
+.card .emoji {
+    font-size: 30px;
+    margin-bottom: 13px;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 17px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.section {
+    display: none;
+    background: white;
+    margin-top: 20px;
+    padding: 25px;
+    border-radius: 12px;
+    min-height: 220px;
+}
+
+.section.active {
+    display: block;
+}
+
+.section h2 {
+    margin-bottom: 15px;
+}
+
+.info {
+    color: #64748b;
+    margin-top: 12px;
+    line-height: 1.7;
+}
+
+.logout {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.logout:hover {
+    background: #b91c1c;
+}
+
+@media(max-width: 1000px) {
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media(max-width: 650px) {
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+        padding: 15px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">🏢 AMS</div>
+
+    <h4>Main Menu</h4>
+
+    <a class="active" onclick="showSection('dashboard', this)">
+        🏠 Dashboard
+    </a>
+
+    <a onclick="showSection('profile', this)">👤 My Profile</a>
+    <a onclick="showSection('apartment', this)">🏢 All Apartment</a>
+
+    <h4>My Records</h4>
+
+    <a onclick="showSection('family', this)">👨‍👩‍👧 Family Members</a>
+    <a onclick="showSection('payments', this)">💳 Payments</a>
+    <a onclick="showSection('bills', this)">🧾 Maintenance Bills</a>
+    <a onclick="showSection('vehicles', this)">🚗 Vehicles</a>
+    <a onclick="showSection('parking', this)">🅿️ Parking Slots</a>
+
+    <h4>Apartment Services</h4>
+
+    <a onclick="showSection('visitors', this)">👥 Visitors</a>
+    <a onclick="showSection('deliveries', this)">📦 Deliveries</a>
+    <a onclick="showSection('gym', this)">💪 Gym Membership</a>
+    <a onclick="showSection('attendance', this)">📅 Gym Attendance</a>
+    <a onclick="showSection('staff', this)">👥 Staff</a>
+    <a onclick="showSection('complaints', this)">📢 Complaints</a>
+    <a onclick="showSection('amenities', this)">🏊 Amenities</a>
+    <a onclick="showSection('bookings', this)">📅 Amenity Bookings</a>
+
+    <button class="logout" onclick="logout()">Logout</button>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <div class="topbar">
+        <h2 id="pageTitle">Resident Dashboard</h2>
+
+        <div class="user-info">
+            👤 <span id="residentName">Resident</span>
+        </div>
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section active">
+
+        <div class="welcome">
+            <h2>Welcome, <span id="welcomeName">Resident</span>! 👋</h2>
+            <p>Welcome to your Apartment Management System.</p>
+            <p id="apartmentInfo" style="margin-top:10px;">
+                Your apartment information
+            </p>
+        </div>
+
+        <h2>My Services</h2>
+
+        <div class="cards">
+
+            <div class="card" onclick="openSection('profile')">
+                <div class="emoji">👤</div>
+                <h3>My Profile</h3>
+                <p>View your personal information.</p>
+            </div>
+
+            <div class="card" onclick="openSection('apartment')">
+                <div class="emoji">🏢</div>
+                <h3>My Apartment</h3>
+                <p>View apartment information.</p>
+            </div>
+
+            <div class="card" onclick="openSection('family')">
+                <div class="emoji">👨‍👩‍👧</div>
+                <h3>Family Members</h3>
+                <p>View your family details.</p>
+            </div>
+
+            <div class="card" onclick="openSection('payments')">
+                <div class="emoji">💳</div>
+                <h3>Payments</h3>
+                <p>View your payment records.</p>
+            </div>
+
+            <div class="card" onclick="openSection('bills')">
+                <div class="emoji">🧾</div>
+                <h3>Maintenance Bills</h3>
+                <p>View your maintenance bills.</p>
+            </div>
+
+            <div class="card" onclick="openSection('vehicles')">
+                <div class="emoji">🚗</div>
+                <h3>Vehicles</h3>
+                <p>View your registered vehicles.</p>
+            </div>
+
+            <div class="card" onclick="openSection('parking')">
+                <div class="emoji">🅿️</div>
+                <h3>Parking Slots</h3>
+                <p>View your parking information.</p>
+            </div>
+
+            <div class="card" onclick="openSection('visitors')">
+                <div class="emoji">👥</div>
+                <h3>Visitors</h3>
+                <p>View your visitor records.</p>
+            </div>
+
+            <div class="card" onclick="openSection('deliveries')">
+                <div class="emoji">📦</div>
+                <h3>Deliveries</h3>
+                <p>View your delivery records.</p>
+            </div>
+
+            <div class="card" onclick="openSection('gym')">
+                <div class="emoji">💪</div>
+                <h3>Gym Membership</h3>
+                <p>View your gym membership.</p>
+            </div>
+
+            <div class="card" onclick="openSection('attendance')">
+                <div class="emoji">📅</div>
+                <h3>Gym Attendance</h3>
+                <p>View your attendance records.</p>
+            </div>
+
+            <div class="card" onclick="openSection('complaints')">
+                <div class="emoji">📢</div>
+                <h3>Complaints</h3>
+                <p>Manage your complaints.</p>
+            </div>
+
+            <div class="card" onclick="openSection('amenities')">
+                <div class="emoji">🏊</div>
+                <h3>Amenities</h3>
+                <p>View available apartment facilities.</p>
+            </div>
+
+            <div class="card" onclick="openSection('bookings')">
+                <div class="emoji">📅</div>
+                <h3>Amenity Bookings</h3>
+                <p>Manage your facility bookings.</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- INDIVIDUAL SECTIONS -->
+
+    <div id="profile" class="section">
+        <h2>My Profile</h2>
+        <div class="info" id="profileInfo"></div>
+    </div>
+
+    <div id="apartment" class="section">
+    <h2>My Apartment Details</h2>
+    <div class="info" id="apartmentInfoDetails">
+        Loading apartment details...
+    </div>
+</div>
+
+   <div id="family" class="section">
+    <h2>My Family Members</h2>
+    <div id="familyMembersContent" class="info">
+        Loading family members...
+    </div>
+</div>
+
+    <div id="payments" class="section">
+    <h2>My Payments</h2>
+    <div id="paymentsContent" class="info">
+        Loading payments...
+    </div>
+</div>
+
+    <div id="bills" class="section">
+    <h2>My Maintenance Bills</h2>
+
+    <div id="billsContent" class="info">
+        Loading maintenance bills...
+    </div>
+</div>
+
+    <div id="vehicles" class="section">
+    <h2>My Vehicles</h2>
+
+    <button onclick="showVehicleForm()" style="
+        background:#2563eb;
+        color:white;
+        padding:11px 20px;
+        border:none;
+        border-radius:7px;
+        cursor:pointer;
+        margin:15px 0;
+    ">
+        + Add Vehicle
+    </button>
+
+    <div id="vehicleForm" style="
+        display:none;
+        background:#f8fafc;
+        padding:20px;
+        border-radius:10px;
+        margin-bottom:20px;
+        border:1px solid #e2e8f0;
+    ">
+        <h3 style="margin-bottom:15px;">Register New Vehicle</h3>
+
+        <form id="addVehicleForm">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px;">
+
+                <input type="text" id="vehicleNumber"
+                    placeholder="Vehicle Number (Required)" required>
+
+                <select id="vehicleType" required>
+                    <option value="">Select Vehicle Type</option>
+                    <option value="Car">Car</option>
+                    <option value="Bike">Bike</option>
+                    <option value="Scooter">Scooter</option>
+                    <option value="Bicycle">Bicycle</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="text" id="vehicleBrand" placeholder="Brand">
+
+                <input type="text" id="vehicleModel" placeholder="Model">
+
+                <input type="number" id="parkingSlotId"
+                    placeholder="Parking Slot ID (Optional)">
+            </div>
+
+            <button type="submit" style="
+                background:#16a34a;
+                color:white;
+                padding:10px 20px;
+                border:none;
+                border-radius:6px;
+                margin-top:15px;
+                cursor:pointer;
+            ">Save Vehicle</button>
+
+            <button type="button" onclick="hideVehicleForm()" style="
+                background:#64748b;
+                color:white;
+                padding:10px 20px;
+                border:none;
+                border-radius:6px;
+                margin-top:15px;
+                cursor:pointer;
+            ">Cancel</button>
+        </form>
+    </div>
+
+    <div id="vehiclesContent" class="info">
+        Loading vehicles...
+    </div>
+</div>
+
+    <div id="parking" class="section">
+    <h2>Apartment Parking Slots</h2>
+
+    <p class="info">
+        View all registered parking slots. You can manage only your assigned slot.
+    </p>
+
+    <div id="parkingContent" class="info">
+        Loading parking slots...
+    </div>
+</div>
+
+    <div id="visitors" class="section">
+    <h2>My Visitors</h2>
+
+    <p class="info">
+        View visitors registered under your resident account.
+    </p>
+
+    <div id="visitorsContent" class="info">
+        Loading visitors...
+    </div>
+</div>
+
+    <div id="deliveries" class="section">
+    <h2>My Deliveries</h2>
+
+    <p class="info">
+        View your incoming packages and update their delivery status.
+    </p>
+
+    <div id="deliveriesContent" class="info">
+        Loading deliveries...
+    </div>
+</div>
+
+    <div id="gym" class="section">
+
+    <h2>Gym Membership</h2>
+
+    <p class="info">
+        Choose your preferred gym training plan and complete payment.
+    </p>
+
+    <!-- Training Plans -->
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+        gap:20px;
+        margin-top:20px;
+    ">
+
+        <div style="background:#f8fafc;padding:25px;border-radius:12px;border:1px solid #e2e8f0;">
+            <h3>3 Months Training</h3>
+            <h2 style="margin:15px 0;color:#1e40af;">₹2,000</h2>
+            <p>Duration: 3 Months</p>
+
+            <button onclick="registerGym('3 Months')">
+    Register
+</button>
+        </div>
+
+        <div style="background:#f8fafc;padding:25px;border-radius:12px;border:1px solid #e2e8f0;">
+            <h3>6 Months Training</h3>
+            <h2 style="margin:15px 0;color:#1e40af;">₹3,000</h2>
+            <p>Duration: 6 Months</p>
+
+            <button onclick="registerGym('6 Months')">
+    Register
+</button>
+        </div>
+
+    </div>
+
+    <!-- Membership Records -->
+    <h2 style="margin-top:35px;">My Gym Memberships</h2>
+
+    <div id="gymMembershipContent" class="info">
+        Loading memberships...
+    </div>
+
+</div>
+
+    <div id="attendance" class="section">
+
+    <h2>Gym Attendance</h2>
+
+    <p class="info">
+        Check in when you enter the gym and check out when you finish your workout.
+    </p>
+
+    <!-- Attendance Actions -->
+    <div style="
+        display:flex;
+        gap:15px;
+        margin:25px 0;
+        flex-wrap:wrap;
+    ">
+
+        <button id="checkInBtn" onclick="gymCheckIn()" style="
+            background:#16a34a;
+            color:white;
+            padding:12px 25px;
+            border:none;
+            border-radius:7px;
+            cursor:pointer;
+        ">
+            Check In
+        </button>
+
+        <button id="checkOutBtn" onclick="gymCheckOut()" style="
+            background:#dc2626;
+            color:white;
+            padding:12px 25px;
+            border:none;
+            border-radius:7px;
+            cursor:pointer;
+            display:none;
+        ">
+            Check Out
+        </button>
+
+    </div>
+
+    <!-- Current Attendance -->
+    <div id="currentAttendance" style="
+        background:#f8fafc;
+        padding:20px;
+        border-radius:10px;
+        margin-bottom:25px;
+        border:1px solid #e2e8f0;
+    ">
+        No active gym session.
+    </div>
+
+    <!-- Attendance History -->
+    <h2 style="margin-bottom:15px;">My Attendance History</h2>
+
+    <div id="attendanceContent" class="info">
+        Loading attendance records...
+    </div>
+
+</div>
+
+<!-- Staff Section -->
+<div id="staff" class="section">
+
+    <h2>Apartment Staff</h2>
+    <p style="color:#64748b; margin-bottom:20px;">
+        View information about all apartment staff members.
+    </p>
+
+    <div id="staffContent">
+        Loading staff information...
+    </div>
+
+</div>
+
+   
+<div id="complaints" class="section">
+
+    <h2>My Complaints</h2>
+
+    <p style="color:#64748b; margin-bottom:20px;">
+        Submit and manage your apartment complaints.
+    </p>
+
+    <div style="background:white; padding:20px; border-radius:10px; margin-bottom:25px;">
+
+        <h3 id="complaintFormTitle">Submit a Complaint</h3>
+
+        <form id="complaintForm" onsubmit="saveComplaint(event)">
+
+            <input type="hidden" id="complaintId">
+
+            <label>Category</label>
+            <select id="complaintCategory" required
+                style="width:100%; padding:11px; margin:8px 0 15px;">
+                <option value="">Select Category</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Security">Security</option>
+                <option value="Noise">Noise</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label>Description</label>
+            <textarea id="complaintDescription" required
+                placeholder="Describe your complaint..."
+                style="width:100%; padding:11px; margin:8px 0 15px; min-height:100px;"></textarea>
+
+            <label>Priority</label>
+            <select id="complaintPriority" required
+                style="width:100%; padding:11px; margin:8px 0 15px;">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <button type="submit"
+                style="background:#2563eb; color:white; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;">
+                Submit Complaint
+            </button>
+
+            <button type="button" id="cancelComplaintEdit"
+                onclick="resetComplaintForm()"
+                style="display:none; background:#64748b; color:white; padding:10px 20px; border:none; border-radius:6px;">
+                Cancel
+            </button>
+
+        </form>
+    </div>
+
+    <h3>My Complaint History</h3>
+
+    <div id="complaintsContent">
+        Loading complaints...
+    </div>
+
+</div>
+
+
+    
+<div id="amenities" class="section">
+
+    <h2>Apartment Amenities</h2>
+
+    <p style="color:#64748b; margin-bottom:20px;">
+        View all facilities and amenities available in your apartment.
+    </p>
+
+    <div id="amenitiesContent">
+        Loading amenities...
+    </div>
+
+</div>
+
+
+    
+<div id="bookings" class="section">
+
+    <h2>Amenity Bookings</h2>
+
+    <p style="color:#64748b; margin-bottom:20px;">
+        Book and manage your apartment amenity reservations.
+    </p>
+
+    <div style="background:white; padding:22px; border-radius:12px; margin-bottom:25px;">
+
+        <h3 id="bookingFormTitle">Book an Amenity</h3>
+
+        <form id="amenityBookingForm" onsubmit="saveAmenityBooking(event)">
+
+            <input type="hidden" id="bookingId">
+
+            <label>Select Amenity</label>
+            <select id="bookingAmenity" required
+                style="width:100%;padding:11px;margin:8px 0 15px;">
+                <option value="">Loading amenities...</option>
+            </select>
+
+            <label>Booking Date</label>
+            <input type="date" id="bookingDate" required
+                style="width:100%;padding:11px;margin:8px 0 15px;">
+
+            <label>Start Time</label>
+            <input type="time" id="bookingStartTime" required
+                style="width:100%;padding:11px;margin:8px 0 15px;">
+
+            <label>End Time</label>
+            <input type="time" id="bookingEndTime" required
+                style="width:100%;padding:11px;margin:8px 0 15px;">
+
+            <button type="submit"
+                style="background:#2563eb;color:white;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;">
+                Book Amenity
+            </button>
+
+            <button type="button" id="cancelBookingEdit"
+                onclick="resetAmenityBookingForm()"
+                style="display:none;background:#64748b;color:white;padding:10px 20px;border:none;border-radius:6px;">
+                Cancel
+            </button>
+
+        </form>
+    </div>
+
+    <h3>My Booking History</h3>
+
+    <div id="amenityBookingsContent">
+        Loading bookings...
+    </div>
+
+</div>
+
+
+</main>
+
+
+<script>
+
+// Check login
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user") || "null");
+
+if (!token || !user || user.role !== "resident") {
+    window.location.href = "login.html";
+}
+
+// Display resident information
+// Load logged-in resident's profile
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+async function loadResidentProfile() {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            "http://apartment-management-fljl.onrender.com/api/resident/me/profile",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load profile");
+        }
+
+        document.getElementById("residentName").textContent = data.name;
+        document.getElementById("welcomeName").textContent = data.name;
+
+        document.getElementById("apartmentInfo").textContent =
+            "Apartment Number: " + data.apartment_number;
+
+        document.getElementById("profileInfo").innerHTML = `
+            <p><strong>Resident ID:</strong> ${escapeHTML(data.resident_id)}</p>
+            <p><strong>Name:</strong> ${escapeHTML(data.name)}</p>
+            <p><strong>Email:</strong> ${escapeHTML(data.email)}</p>
+            <p><strong>Phone:</strong> ${escapeHTML(data.phone)}</p>
+            <p><strong>Occupation:</strong> ${escapeHTML(data.occupation)}</p>
+            <p><strong>Role:</strong> ${escapeHTML(data.role)}</p>
+            <p><strong>Apartment Number:</strong> ${escapeHTML(data.apartment_number)}</p>
+            <p><strong>Floor:</strong> ${escapeHTML(data.floor)}</p>
+            <p><strong>Wing:</strong> ${escapeHTML(data.wing)}</p>
+            <p><strong>Apartment Type:</strong> ${escapeHTML(data.type)}</p>
+            <p><strong>Area:</strong> ${escapeHTML(data.area_sqft)} sq.ft.</p>
+            <p><strong>Move-in Date:</strong> ${escapeHTML(data.move_in_date)}</p>
+            <p><strong>Move-out Date:</strong> ${escapeHTML(data.move_out_date)}</p>
+        `;
+
+    } catch (error) {
+        console.error("Profile error:", error);
+        document.getElementById("profileInfo").textContent = error.message;
+    }
+}
+
+loadResidentProfile();
+
+
+// Load apartment details of logged-in resident
+
+// Load all apartments and highlight logged-in resident's apartment
+async function loadAllApartments() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("apartmentInfoDetails");
+
+    container.innerHTML = "Loading apartments...";
+
+    try {
+
+        // Get logged-in resident's apartment ID
+        const profileResponse = await fetch(
+            "http://apartment-management-fljl.onrender.com/api/resident/me/profile",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const profile = await profileResponse.json();
+
+        if (!profileResponse.ok) {
+            throw new Error(profile.message || "Failed to load resident profile");
+        }
+
+        const myApartmentId = Number(profile.apartment_id);
+
+        // Fetch all apartments
+        const response = await fetch(
+            "http://apartment-management-fljl.onrender.com/api/apartment"
+        );
+
+        const apartments = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Failed to load apartments");
+        }
+
+        if (apartments.length === 0) {
+            container.innerHTML = "No apartments found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="
+                display:grid;
+                grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+                gap:20px;
+            ">
+
+                ${apartments.map(a => {
+
+                    const isMyApartment =
+                        Number(a.apartment_id) === myApartmentId;
+
+                    return `
+                        <div style="
+                            background:${isMyApartment ? '#dbeafe' : 'white'};
+                            border:1px solid ${isMyApartment ? '#2563eb' : '#e2e8f0'};
+                            border-radius:12px;
+                            padding:22px;
+                            box-shadow:0 2px 8px rgba(0,0,0,0.05);
+                        ">
+
+                            <div style="
+                                display:flex;
+                                justify-content:space-between;
+                                align-items:center;
+                                gap:8px;
+                                margin-bottom:15px;
+                            ">
+
+                                <h3 style="color:#1e40af;">
+                                    ${escapeHTML(a.apartment_number)}
+                                </h3>
+
+                                ${isMyApartment ? `
+                                    <span style="
+                                        background:#2563eb;
+                                        color:white;
+                                        padding:5px 9px;
+                                        border-radius:15px;
+                                        font-size:11px;
+                                        white-space:nowrap;
+                                    ">
+                                        Your Apartment
+                                    </span>
+                                ` : ""}
+
+                            </div>
+
+                            <p><strong>Apartment ID:</strong>
+                                ${escapeHTML(a.apartment_id)}</p>
+
+                            <p><strong>Floor:</strong>
+                                ${escapeHTML(a.floor)}</p>
+
+                            <p><strong>Wing:</strong>
+                                ${escapeHTML(a.wing)}</p>
+
+                            <p><strong>Type:</strong>
+                                ${escapeHTML(a.type)}</p>
+
+                            <p><strong>Area:</strong>
+                                ${escapeHTML(a.area_sqft)} sq.ft.</p>
+
+                            <p><strong>Status:</strong>
+                                ${escapeHTML(a.status)}</p>
+
+                        </div>
+                    `;
+
+                }).join("")}
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("Apartments error:", error);
+        container.textContent = error.message;
+
+    }
+}
+
+
+loadAllApartments();
+
+// Load logged-in resident's family members
+async function loadFamilyMembers() {
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("familyMembersContent");
+
+    container.innerHTML = "Loading family members...";
+
+    try {
+        const response = await fetch(
+            "http://apartment-management-fljl.onrender.com/api/familymember/my",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load family members");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No family members found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px;">
+                ${data.map(member => `
+                    <div style="background:#f8fafc; padding:20px; border-radius:10px; border:1px solid #e2e8f0;">
+                        <h3 style="color:#1e40af; margin-bottom:12px;">
+                            Family Member #${escapeHTML(member.family_member_id)}
+                        </h3>
+                        <p><strong>Relationship:</strong> ${escapeHTML(member.relationship)}</p>
+                        <p><strong>Age:</strong> ${escapeHTML(member.age)}</p>
+                        <p><strong>Phone:</strong> ${escapeHTML(member.phone || "-")}</p>
+                    </div>
+                `).join("")}
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Family members error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Load logged-in resident's maintenance bills
+async function loadMaintenanceBills() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("billsContent");
+
+    container.innerHTML = "Loading maintenance bills...";
+
+    try {
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/maintenancebill/my",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load maintenance bills");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No maintenance bills found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Bill ID</th>
+                            <th style="padding:12px;">Bill Month</th>
+                            <th style="padding:12px;">Amount</th>
+                            <th style="padding:12px;">Due Date</th>
+                            <th style="padding:12px;">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${data.map(bill => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:12px;">
+                                    ${escapeHTML(bill.bill_id)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(bill.bill_month)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ₹${escapeHTML(bill.amount)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${bill.due_date
+                                        ? escapeHTML(new Date(bill.due_date).toLocaleDateString("en-IN"))
+                                        : "-"}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    <span style="
+                                        padding:5px 10px;
+                                        border-radius:5px;
+                                        background:${String(bill.status).toLowerCase() === "paid" ? "#dcfce7" : "#fef3c7"};
+                                        color:${String(bill.status).toLowerCase() === "paid" ? "#166534" : "#92400e"};
+                                    ">
+                                        ${escapeHTML(bill.status)}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Maintenance bills error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Show vehicle form
+function showVehicleForm() {
+    document.getElementById("vehicleForm").style.display = "block";
+}
+
+// Hide vehicle form
+function hideVehicleForm() {
+    document.getElementById("vehicleForm").style.display = "none";
+    document.getElementById("addVehicleForm").reset();
+}
+
+// Load logged-in resident's vehicles
+async function loadVehicles() {
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("vehiclesContent");
+
+    container.innerHTML = "Loading vehicles...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/vehicle/my",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load vehicles");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No vehicles registered yet.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:grid;
+                grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+                gap:18px;">
+
+                ${data.map(vehicle => `
+                    <div style="
+                        background:#f8fafc;
+                        padding:20px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                    ">
+                        <h3 style="color:#1e40af;margin-bottom:12px;">
+                            🚗 ${escapeHTML(vehicle.vehicle_number)}
+                        </h3>
+
+                        <p><strong>Vehicle ID:</strong>
+                            ${escapeHTML(vehicle.vehicle_id)}</p>
+
+                        <p><strong>Type:</strong>
+                            ${escapeHTML(vehicle.vehicle_type)}</p>
+
+                        <p><strong>Brand:</strong>
+                            ${escapeHTML(vehicle.brand || "-")}</p>
+
+                        <p><strong>Model:</strong>
+                            ${escapeHTML(vehicle.model || "-")}</p>
+
+                        <p><strong>Parking Slot:</strong>
+                            ${escapeHTML(vehicle.parking_slot_id || "-")}</p>
+
+                        <button onclick="deleteVehicle(${Number(vehicle.vehicle_id)})"
+                            style="
+                                background:#dc2626;
+                                color:white;
+                                padding:9px 15px;
+                                border:none;
+                                border-radius:6px;
+                                cursor:pointer;
+                                margin-top:15px;
+                            ">
+                            Delete Vehicle
+                        </button>
+                    </div>
+                `).join("")}
+
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Vehicles error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Add vehicle
+document.getElementById("addVehicleForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+
+    const vehicleData = {
+        vehicle_number: document.getElementById("vehicleNumber").value.trim(),
+        vehicle_type: document.getElementById("vehicleType").value,
+        brand: document.getElementById("vehicleBrand").value.trim(),
+        model: document.getElementById("vehicleModel").value.trim(),
+        parking_slot_id: document.getElementById("parkingSlotId").value || null
+    };
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/vehicle/my",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(vehicleData)
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to add vehicle");
+        }
+
+        alert("Vehicle added successfully!");
+
+        document.getElementById("addVehicleForm").reset();
+        hideVehicleForm();
+
+        loadVehicles();
+
+    } catch (error) {
+        console.error("Add vehicle error:", error);
+        alert(error.message);
+    }
+});
+
+// Delete vehicle
+async function deleteVehicle(vehicleId) {
+
+    if (!confirm("Are you sure you want to delete this vehicle?")) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/vehicle/my/${vehicleId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to delete vehicle");
+        }
+
+        alert("Vehicle deleted successfully!");
+
+        loadVehicles();
+
+    } catch (error) {
+        console.error("Delete vehicle error:", error);
+        alert(error.message);
+    }
+}
+
+// Store parking slots for edit functionality
+let residentParkingSlots = [];
+
+// Load all parking slots
+async function loadParkingSlots() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("parkingContent");
+
+    container.innerHTML = "Loading parking slots...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/parkingslot/my",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load parking slots");
+        }
+
+        residentParkingSlots = data;
+
+        if (data.length === 0) {
+            container.innerHTML = "No parking slots registered.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:13px;">Slot ID</th>
+                            <th style="padding:13px;">Slot Number</th>
+                            <th style="padding:13px;">Type</th>
+                            <th style="padding:13px;">Status</th>
+                            <th style="padding:13px;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${data.map(slot => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+
+                                <td style="padding:13px;">
+                                    ${escapeHTML(slot.parking_slot_id)}
+                                </td>
+
+                                <td style="padding:13px;">
+                                    ${escapeHTML(slot.slot_number)}
+                                </td>
+
+                                <td style="padding:13px;">
+                                    ${escapeHTML(slot.type)}
+                                </td>
+
+                                <td style="padding:13px;">
+                                    <span style="
+                                        padding:5px 10px;
+                                        border-radius:5px;
+                                        background:${String(slot.status).toLowerCase() === "available" ? "#dcfce7" : "#fee2e2"};
+                                        color:${String(slot.status).toLowerCase() === "available" ? "#166534" : "#991b1b"};
+                                    ">
+                                        ${escapeHTML(slot.status)}
+                                    </span>
+
+                                    ${Number(slot.is_mine) === 1
+                                        ? '<span style="color:#2563eb;font-weight:bold;margin-left:5px;">(My Slot)</span>'
+                                        : ''}
+                                </td>
+
+                                <td style="padding:13px;">
+                                    ${Number(slot.is_mine) === 1
+                                        ? `
+                                            <button onclick="editParkingSlot(${Number(slot.parking_slot_id)})"
+                                                style="background:#2563eb;color:white;padding:7px 12px;border:none;border-radius:5px;cursor:pointer;margin:3px;">
+                                                Edit
+                                            </button>
+
+                                            <button onclick="deleteParkingSlot(${Number(slot.parking_slot_id)})"
+                                                style="background:#dc2626;color:white;padding:7px 12px;border:none;border-radius:5px;cursor:pointer;margin:3px;">
+                                                Delete
+                                            </button>
+                                        `
+                                        : '<span style="color:#94a3b8;">No access</span>'
+                                    }
+                                </td>
+
+                            </tr>
+                        `).join("")}
+                    </tbody>
+
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Parking slots error:", error);
+        container.textContent = error.message;
+    }
+}
+
+
+// Edit parking assignment
+async function editParkingSlot(currentSlotId) {
+
+    const availableSlots = residentParkingSlots.filter(slot =>
+        String(slot.status).toLowerCase() === "available"
+    );
+
+    if (availableSlots.length === 0) {
+        alert("No other available parking slots.");
+        return;
+    }
+
+    const options = availableSlots.map(slot =>
+        `${slot.parking_slot_id} - ${slot.slot_number} (${slot.type})`
+    ).join("\n");
+
+    const newSlotId = prompt(
+        "Enter the ID of the new available parking slot:\n\n" + options
+    );
+
+    if (newSlotId === null) return;
+
+    const selectedSlot = availableSlots.find(
+        slot => Number(slot.parking_slot_id) === Number(newSlotId.trim())
+    );
+
+    if (!selectedSlot) {
+        alert("Please enter a valid available parking slot ID.");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/parkingslot/my/${currentSlotId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    new_parking_slot_id: selectedSlot.parking_slot_id
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to update parking assignment");
+        }
+
+        alert("Parking assignment updated successfully!");
+        loadParkingSlots();
+
+    } catch (error) {
+        console.error("Edit parking error:", error);
+        alert(error.message);
+    }
+}
+
+
+// Delete parking assignment
+async function deleteParkingSlot(parkingSlotId) {
+
+    if (!confirm("Are you sure you want to remove your parking assignment?")) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/parkingslot/my/${parkingSlotId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to delete parking assignment");
+        }
+
+        alert("Your parking assignment has been removed!");
+        loadParkingSlots();
+
+    } catch (error) {
+        console.error("Delete parking error:", error);
+        alert(error.message);
+    }
+}
+
+// Load logged-in resident's visitors
+async function loadVisitors() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("visitorsContent");
+
+    container.innerHTML = "Loading visitors...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/visitor/my",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load visitors");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No visitor records found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Visitor ID</th>
+                            <th style="padding:12px;">Visitor Name</th>
+                            <th style="padding:12px;">Phone</th>
+                            <th style="padding:12px;">Purpose</th>
+                            <th style="padding:12px;">Vehicle Number</th>
+                            <th style="padding:12px;">Entry Time</th>
+                            <th style="padding:12px;">Exit Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${data.map(visitor => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(visitor.visitor_id)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(visitor.visitor_name)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(visitor.phone || "-")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(visitor.purpose || "-")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(visitor.vehicle_number || "-")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${visitor.entry_time
+                                        ? escapeHTML(new Date(visitor.entry_time).toLocaleString("en-IN"))
+                                        : "-"}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${visitor.exit_time
+                                        ? escapeHTML(new Date(visitor.exit_time).toLocaleString("en-IN"))
+                                        : "-"}
+                                </td>
+
+                            </tr>
+                        `).join("")}
+                    </tbody>
+
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Visitors error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Load logged-in resident's deliveries
+async function loadDeliveries() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("deliveriesContent");
+
+    container.innerHTML = "Loading deliveries...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/delivery/my",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load deliveries");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No delivery records found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:grid;
+                grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+                gap:18px;">
+
+                ${data.map(delivery => `
+                    <div style="
+                        background:#f8fafc;
+                        padding:20px;
+                        border-radius:10px;
+                        border:1px solid #e2e8f0;
+                    ">
+
+                        <h3 style="color:#1e40af;margin-bottom:12px;">
+                            📦 ${escapeHTML(delivery.delivery_company || "Delivery")}
+                        </h3>
+
+                        <p><strong>Delivery ID:</strong>
+                            ${escapeHTML(delivery.delivery_id)}</p>
+
+                        <p><strong>Delivery Person:</strong>
+                            ${escapeHTML(delivery.delivery_person || "-")}</p>
+
+                        <p><strong>Company:</strong>
+                            ${escapeHTML(delivery.delivery_company || "-")}</p>
+
+                        <p><strong>Package Details:</strong>
+                            ${escapeHTML(delivery.package_details || "-")}</p>
+
+                        <p><strong>Vehicle Number:</strong>
+                            ${escapeHTML(delivery.vehicle_number || "-")}</p>
+
+                        <p><strong>Arrival Time:</strong>
+                            ${delivery.arrival_time
+                                ? escapeHTML(new Date(delivery.arrival_time).toLocaleString("en-IN"))
+                                : "-"}</p>
+
+                        <p><strong>Collected Time:</strong>
+                            ${delivery.collected_time
+                                ? escapeHTML(new Date(delivery.collected_time).toLocaleString("en-IN"))
+                                : "-"}</p>
+
+                        <p style="margin-top:12px;">
+                            <strong>Status:</strong>
+
+                            <span style="
+                                display:inline-block;
+                                padding:5px 12px;
+                                border-radius:5px;
+                                background:${String(delivery.status).toLowerCase() === "received" ? "#dcfce7" : "#fef3c7"};
+                                color:${String(delivery.status).toLowerCase() === "received" ? "#166534" : "#92400e"};
+                                font-weight:bold;
+                            ">
+                                ${escapeHTML(delivery.status)}
+                            </span>
+                        </p>
+
+                    <div style="display:flex; gap:10px; margin-top:15px;">
+
+    <button
+        onclick="updateDeliveryStatus(${Number(delivery.delivery_id)}, 'Pending')"
+        style="
+            background:#f59e0b;
+            color:white;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            opacity:${String(delivery.status).toLowerCase() === 'pending' ? '1' : '0.6'};
+        ">
+        Pending
+    </button>
+
+    <button
+        onclick="updateDeliveryStatus(${Number(delivery.delivery_id)}, 'Received')"
+        style="
+            background:#16a34a;
+            color:white;
+            padding:10px 18px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            opacity:${String(delivery.status).toLowerCase() === 'received' ? '1' : '0.6'};
+        ">
+        Received
+    </button>
+
+</div>    
+
+                    </div>
+                `).join("")}
+
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Deliveries error:", error);
+        container.textContent = error.message;
+    }
+}
+
+
+// Mark delivery as received
+async function updateDeliveryStatus(deliveryId, status) {
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/delivery/my/${deliveryId}/status`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ status })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to update status");
+        }
+
+        await loadDeliveries();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+
+// Load logged-in resident's payments
+async function loadPayments() {
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("paymentsContent");
+
+    container.innerHTML = "Loading payments...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/payment/my",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load payments");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No payment records found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Payment ID</th>
+                            <th style="padding:12px;">Bill ID</th>
+                            <th style="padding:12px;">Bill Month</th>
+                            <th style="padding:12px;">Date</th>
+                            <th style="padding:12px;">Amount</th>
+                            <th style="padding:12px;">Mode</th>
+                            <th style="padding:12px;">Reference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(payment => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:12px;">${escapeHTML(payment.payment_id)}</td>
+                                <td style="padding:12px;">${escapeHTML(payment.bill_id)}</td>
+                                <td style="padding:12px;">${escapeHTML(payment.bill_month)}</td>
+                                <td style="padding:12px;">${payment.payment_date ? escapeHTML(new Date(payment.payment_date).toLocaleDateString("en-IN")) : "-"}</td>
+                                <td style="padding:12px;">₹${escapeHTML(payment.amount)}</td>
+                                <td style="padding:12px;">${escapeHTML(payment.payment_mode)}</td>
+                                <td style="padding:12px;">${escapeHTML(payment.reference_number || "-")}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Payments error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Register for gym training
+async function registerGym(planName) {
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/gymmembership/my",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                body: JSON.stringify({ plan_name: planName })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "Registration failed");
+            return;
+        }
+
+        alert("Registration successful! Please complete your payment.");
+        await displayMyGymMemberships();
+
+    } catch (error) {
+        console.error("Registration error:", error);
+        alert("Unable to register.");
+    }
+}
+
+// Complete simulated payment
+async function payForGym(membershipId) {
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/gymmembership/my/${membershipId}/pay`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Payment failed");
+        }
+
+        alert("Payment Successful! Your gym membership is now active.");
+
+        await displayMyGymMemberships();
+
+    } catch (error) {
+        console.error("Gym payment error:", error);
+        alert(error.message);
+        await displayMyGymMemberships();
+    }
+}
+
+
+// Display resident gym memberships
+async function displayMyGymMemberships() {
+
+    const token = localStorage.getItem("token");
+    const container = document.getElementById("gymMembershipContent");
+
+    container.innerHTML = "Loading memberships...";
+
+    try {
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/gymmembership/my",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load memberships");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No gym memberships registered yet.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;text-align:left;">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Plan</th>
+                            <th style="padding:12px;">Fee</th>
+                            <th style="padding:12px;">Start Date</th>
+                            <th style="padding:12px;">End Date</th>
+                            <th style="padding:12px;">Payment Status</th>
+                            <th style="padding:12px;">Membership Status</th>
+                            <th style="padding:12px;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${data.map(m => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(m.plan_name)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ₹${escapeHTML(m.fee)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${m.start_date ? escapeHTML(String(m.start_date).split("T")[0]) : "-"}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${m.end_date ? escapeHTML(String(m.end_date).split("T")[0]) : "-"}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(m.payment_status || "Pending")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(m.status)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${m.payment_status === "Pending" && m.status === "Pending"
+                                        ? `<button onclick="payForGym(${Number(m.membership_id)})"
+                                            style="background:#16a34a;color:white;padding:8px 12px;border:none;border-radius:5px;cursor:pointer;">
+                                            Pay Now
+                                           </button>`
+                                        : m.payment_status === "Completed"
+                                            ? `<span style="color:#16a34a;font-weight:bold;">Completed</span>`
+                                            : "-"
+                                    }
+                                </td>
+
+                            </tr>
+                        `).join("")}
+                    </tbody>
+
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Gym membership error:", error);
+        container.textContent = error.message;
+    }
+}
+
+// Load gym membership section
+function loadGymMembership() {
+    displayMyGymMemberships();
+}
+
+
+// Format attendance date and time
+function formatAttendanceDate(dateValue) {
+
+    if (!dateValue) return "-";
+
+    const date = new Date(dateValue);
+
+    if (isNaN(date.getTime())) return "-";
+
+    return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+}
+
+
+// Load resident attendance history
+async function loadGymAttendance() {
+
+    const token = localStorage.getItem("token");
+
+    const container = document.getElementById("attendanceContent");
+const currentContainer = document.getElementById("currentAttendance");
+
+if (!container || !currentContainer) {
+    console.error("Gym Attendance HTML elements are missing.");
+    return;
+}
+
+    container.innerHTML = "Loading attendance records...";
+
+    try {
+
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/gymattendance/my",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load attendance");
+        }
+
+        // Find an open attendance session
+        const activeSession = data.find(record => !record.check_out);
+
+        const checkInBtn = document.getElementById("checkInBtn");
+        const checkOutBtn = document.getElementById("checkOutBtn");
+
+        if (activeSession) {
+
+            checkInBtn.style.display = "none";
+            checkOutBtn.style.display = "inline-block";
+
+            currentContainer.innerHTML = `
+                <h3 style="color:#16a34a;margin-bottom:12px;">
+                    Gym Session In Progress
+                </h3>
+
+                <p>
+                    <strong>Check-in Time:</strong>
+                    ${escapeHTML(formatAttendanceDate(activeSession.check_in))}
+                </p>
+
+                <p>
+                    <strong>Status:</strong> Checked In
+                </p>
+            `;
+
+        } else {
+
+            checkInBtn.style.display = "inline-block";
+            checkOutBtn.style.display = "none";
+
+            currentContainer.innerHTML = `
+                <h3 style="color:#2563eb;margin-bottom:10px;">
+                    No Active Gym Session
+                </h3>
+                <p>You can check in when you enter the gym.</p>
+            `;
+        }
+
+        // No attendance records
+        if (data.length === 0) {
+            container.innerHTML = "No attendance records found.";
+            return;
+        }
+
+        // Attendance history table
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+
+                <table style="
+                    width:100%;
+                    border-collapse:collapse;
+                    text-align:left;
+                ">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Attendance ID</th>
+                            <th style="padding:12px;">Date</th>
+                            <th style="padding:12px;">Check In</th>
+                            <th style="padding:12px;">Check Out</th>
+                            <th style="padding:12px;">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        ${data.map(record => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(record.attendance_id)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${record.check_in
+                                        ? escapeHTML(new Date(record.check_in).toLocaleDateString("en-IN"))
+                                        : "-"
+                                    }
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(formatAttendanceDate(record.check_in))}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${record.check_out
+                                        ? escapeHTML(formatAttendanceDate(record.check_out))
+                                        : "-"
+                                    }
+                                </td>
+
+                                <td style="padding:12px;">
+                                    <span style="
+                                        padding:5px 10px;
+                                        border-radius:5px;
+                                        background:${record.check_out ? "#dcfce7" : "#fef3c7"};
+                                        color:${record.check_out ? "#166534" : "#92400e"};
+                                    ">
+                                        ${record.check_out ? "Completed" : "In Progress"}
+                                    </span>
+                                </td>
+
+                            </tr>
+                        `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("Gym attendance error:", error);
+        container.textContent = error.message;
+    }
+}
+
+
+// Resident Check In
+async function gymCheckIn() {
+
+    const token = localStorage.getItem("token");
+
+    try {
+
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/gymattendance/my/check-in",
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Check-in failed");
+        }
+
+        alert("Gym check-in successful!");
+
+        await loadGymAttendance();
+
+    } catch (error) {
+
+        console.error("Gym check-in error:", error);
+        alert(error.message);
+    }
+}
+
+
+// Resident Check Out
+async function gymCheckOut() {
+
+    const token = localStorage.getItem("token");
+
+    try {
+
+        // Get current attendance records
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/gymattendance/my",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const records = await response.json();
+
+        if (!response.ok) {
+            throw new Error(records.message || "Failed to fetch attendance");
+        }
+
+        const activeSession = records.find(record => !record.check_out);
+
+        if (!activeSession) {
+            alert("No active gym session found.");
+            await loadGymAttendance();
+            return;
+        }
+
+        // Update checkout time
+        const checkoutResponse = await fetch(
+            `https://apartment-management-fljl.onrender.com/api/gymattendance/my/${activeSession.attendance_id}/check-out`,
+            {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const checkoutData = await checkoutResponse.json();
+
+        if (!checkoutResponse.ok) {
+            throw new Error(checkoutData.message || "Check-out failed");
+        }
+
+        alert("Gym check-out successful!");
+
+        await loadGymAttendance();
+
+    } catch (error) {
+
+        console.error("Gym check-out error:", error);
+        alert(error.message);
+    }
+}
+
+// Load all staff information (View Only)
+async function loadStaff() {
+
+    const container = document.getElementById("staffContent");
+
+    container.innerHTML = "Loading staff information...";
+
+    try {
+
+        const response = await fetch(
+            "https://apartment-management-fljl.onrender.com/api/staff"
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load staff");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No staff records found.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+
+                <table style="
+                    width:100%;
+                    border-collapse:collapse;
+                    text-align:left;
+                    background:white;
+                ">
+
+                    <thead>
+                        <tr style="background:#eff6ff;">
+
+                            <th style="padding:12px;">Staff ID</th>
+                            <th style="padding:12px;">Name</th>
+                            <th style="padding:12px;">Phone</th>
+                            <th style="padding:12px;">Email</th>
+                            <th style="padding:12px;">Staff Type</th>
+                            <th style="padding:12px;">Joining Date</th>
+                            <th style="padding:12px;">Status</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        ${data.map(staff => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.staff_id)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.name)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.phone || "-")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.email || "-")}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.staff_type)}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${staff.joining_date
+                                        ? escapeHTML(new Date(staff.joining_date).toLocaleDateString("en-IN"))
+                                        : "-"}
+                                </td>
+
+                                <td style="padding:12px;">
+                                    ${escapeHTML(staff.status)}
+                                </td>
+
+                            </tr>
+                        `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("Staff error:", error);
+        container.textContent = error.message;
+
+    }
+}
+
+
+const COMPLAINT_API = "https://apartment-management-fljl.onrender.com/api/complaint/my";
+
+// Load own complaints
+async function loadComplaints() {
+
+    const container = document.getElementById("complaintsContent");
+    const token = localStorage.getItem("token");
+
+    container.innerHTML = "Loading complaints...";
+
+    try {
+        const response = await fetch(COMPLAINT_API, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load complaints");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "You haven't submitted any complaints yet.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background:white;">
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">ID</th>
+                            <th style="padding:12px;">Category</th>
+                            <th style="padding:12px;">Description</th>
+                            <th style="padding:12px;">Priority</th>
+                            <th style="padding:12px;">Status</th>
+                            <th style="padding:12px;">Date</th>
+                            <th style="padding:12px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(c => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:12px;">${escapeHTML(c.complaint_id)}</td>
+                                <td style="padding:12px;">${escapeHTML(c.category)}</td>
+                                <td style="padding:12px;">${escapeHTML(c.description)}</td>
+                                <td style="padding:12px;">${escapeHTML(c.priority)}</td>
+                                <td style="padding:12px;">${escapeHTML(c.status)}</td>
+                                <td style="padding:12px;">
+                                    ${c.created_at ? escapeHTML(new Date(c.created_at).toLocaleDateString("en-IN")) : "-"}
+                                </td>
+                                <td style="padding:12px; white-space:nowrap;">
+                                    <button onclick="editComplaint(${Number(c.complaint_id)})"
+                                        style="background:#2563eb;color:white;padding:7px 10px;border:none;border-radius:5px;">
+                                        Edit
+                                    </button>
+                                    <button onclick="deleteComplaint(${Number(c.complaint_id)})"
+                                        style="background:#dc2626;color:white;padding:7px 10px;border:none;border-radius:5px;">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Complaints error:", error);
+        container.textContent = error.message;
+    }
+}
+
+
+// Add or update complaint
+async function saveComplaint(event) {
+
+    event.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const id = document.getElementById("complaintId").value;
+
+    const complaint = {
+        category: document.getElementById("complaintCategory").value,
+        description: document.getElementById("complaintDescription").value,
+        priority: document.getElementById("complaintPriority").value
+    };
+
+    const url = id
+        ? `${COMPLAINT_API}/${id}`
+        : COMPLAINT_API;
+
+    try {
+        const response = await fetch(url, {
+            method: id ? "PUT" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(complaint)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Operation failed");
+        }
+
+        alert(data.message);
+        resetComplaintForm();
+        await loadComplaints();
+
+    } catch (error) {
+        console.error("Save complaint error:", error);
+        alert(error.message);
+    }
+}
+
+
+// Edit complaint
+async function editComplaint(id) {
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(COMPLAINT_API, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load complaints");
+        }
+
+        const complaint = data.find(c => Number(c.complaint_id) === id);
+
+        if (!complaint) {
+            alert("Complaint not found.");
+            return;
+        }
+
+        document.getElementById("complaintId").value = complaint.complaint_id;
+        document.getElementById("complaintCategory").value = complaint.category;
+        document.getElementById("complaintDescription").value = complaint.description;
+        document.getElementById("complaintPriority").value = complaint.priority || "Medium";
+
+        document.getElementById("complaintFormTitle").textContent = "Edit Complaint";
+        document.querySelector("#complaintForm button[type='submit']").textContent = "Update Complaint";
+        document.getElementById("cancelComplaintEdit").style.display = "inline-block";
+
+        document.getElementById("complaintForm").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+
+// Delete complaint
+async function deleteComplaint(id) {
+
+    if (!confirm("Are you sure you want to delete this complaint?")) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${COMPLAINT_API}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to delete complaint");
+        }
+
+        alert(data.message);
+        await loadComplaints();
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+
+// Reset form
+function resetComplaintForm() {
+
+    document.getElementById("complaintForm").reset();
+    document.getElementById("complaintId").value = "";
+
+    document.getElementById("complaintFormTitle").textContent = "Submit a Complaint";
+
+    document.querySelector("#complaintForm button[type='submit']").textContent = "Submit Complaint";
+
+    document.getElementById("cancelComplaintEdit").style.display = "none";
+}
+
+
+async function loadAmenities() {
+
+    const container = document.getElementById("amenitiesContent");
+
+    container.innerHTML = "Loading amenities...";
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/amenity"
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load amenities");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "No amenities available.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="display:grid;
+                        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+                        gap:20px;">
+
+                ${data.map(a => `
+                    <div style="background:white;
+                                padding:22px;
+                                border-radius:12px;
+                                border:1px solid #e2e8f0;
+                                box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+
+                        <h3 style="color:#1e40af; margin-bottom:12px;">
+                            ${escapeHTML(a.name)}
+                        </h3>
+
+                        <p><strong>Amenity ID:</strong>
+                            ${escapeHTML(a.amenity_id)}</p>
+
+                        <p><strong>Description:</strong>
+                            ${escapeHTML(a.description || "-")}</p>
+
+                        <p><strong>Location:</strong>
+                            ${escapeHTML(a.location || "-")}</p>
+
+                        <p><strong>Capacity:</strong>
+                            ${escapeHTML(a.capacity ?? "-")}</p>
+
+                        <p><strong>Status:</strong>
+                            ${escapeHTML(a.status || "-")}</p>
+
+                    </div>
+                `).join("")}
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("Amenities error:", error);
+        container.textContent = error.message;
+
+    }
+}
+
+
+const AMENITY_API = "https://apartment-management-fljl.onrender.com/api/amenity";
+const BOOKING_API = "https://apartment-management-fljl.onrender.com/api/amenitybooking/my";
+
+// Load amenities into dropdown
+async function loadBookingAmenities() {
+
+    const select = document.getElementById("bookingAmenity");
+
+    try {
+
+        const response = await fetch(AMENITY_API);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Failed to load amenities");
+        }
+
+        const available = data.filter(a =>
+            String(a.status || "").toLowerCase() === "available"
+        );
+
+        select.innerHTML = `
+            <option value="">Select Amenity</option>
+            ${available.map(a => `
+                <option value="${Number(a.amenity_id)}">
+                    ${escapeHTML(a.name)}
+                </option>
+            `).join("")}
+        `;
+
+        if (available.length === 0) {
+            select.innerHTML = `<option value="">No available amenities</option>`;
+        }
+
+    } catch (error) {
+        console.error("Amenity dropdown error:", error);
+        select.innerHTML = `<option value="">Failed to load amenities</option>`;
+    }
+}
+
+
+// Load resident's bookings
+async function loadAmenityBookings() {
+
+    const container = document.getElementById("amenityBookingsContent");
+    const token = localStorage.getItem("token");
+
+    container.innerHTML = "Loading bookings...";
+
+    try {
+
+        const response = await fetch(BOOKING_API, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to load bookings");
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = "You have no amenity bookings yet.";
+            return;
+        }
+
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;background:white;">
+                    <thead>
+                        <tr style="background:#eff6ff;">
+                            <th style="padding:12px;">Booking ID</th>
+                            <th style="padding:12px;">Amenity</th>
+                            <th style="padding:12px;">Date</th>
+                            <th style="padding:12px;">Start Time</th>
+                            <th style="padding:12px;">End Time</th>
+                            <th style="padding:12px;">Status</th>
+                            <th style="padding:12px;">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${data.map(b => `
+                            <tr style="border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:12px;">${escapeHTML(b.booking_id)}</td>
+                                <td style="padding:12px;">${escapeHTML(b.amenity_name || "-")}</td>
+                                <td style="padding:12px;">${escapeHTML(String(b.booking_date).split("T")[0])}</td>
+                                <td style="padding:12px;">${escapeHTML(String(b.start_time).slice(0,5))}</td>
+                                <td style="padding:12px;">${escapeHTML(String(b.end_time).slice(0,5))}</td>
+                                <td style="padding:12px;">${escapeHTML(b.status || "Booked")}</td>
+                                <td style="padding:12px;white-space:nowrap;">
+
+                                    <button onclick="editAmenityBooking(${Number(b.booking_id)})"
+                                        style="background:#2563eb;color:white;padding:7px 10px;border:none;border-radius:5px;cursor:pointer;">
+                                        Edit
+                                    </button>
+
+                                    <button onclick="deleteAmenityBooking(${Number(b.booking_id)})"
+                                        style="background:#dc2626;color:white;padding:7px 10px;border:none;border-radius:5px;cursor:pointer;">
+                                        Delete
+                                    </button>
+
+                                </td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Booking error:", error);
+        container.textContent = error.message;
+    }
+}
+
+
+// Add or update booking
+async function saveAmenityBooking(event) {
+
+    event.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const id = document.getElementById("bookingId").value;
+
+    const booking = {
+        amenity_id: document.getElementById("bookingAmenity").value,
+        booking_date: document.getElementById("bookingDate").value,
+        start_time: document.getElementById("bookingStartTime").value,
+        end_time: document.getElementById("bookingEndTime").value
+    };
+
+    if (booking.start_time >= booking.end_time) {
+        alert("End time must be later than start time.");
+        return;
+    }
+
+    const url = id ? `${BOOKING_API}/${id}` : BOOKING_API;
+
+    try {
+
+        const response = await fetch(url, {
+            method: id ? "PUT" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(booking)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Booking operation failed");
+        }
+
+        alert(data.message);
+
+        resetAmenityBookingForm();
+        await loadAmenityBookings();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+
+// Edit booking
+async function editAmenityBooking(id) {
+
+    const token = localStorage.getItem("token");
+
+    try {
+
+        const response = await fetch(BOOKING_API, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to fetch bookings");
+        }
+
+        const booking = data.find(b =>
+            Number(b.booking_id) === id
+        );
+
+        if (!booking) {
+            alert("Booking not found.");
+            return;
+        }
+
+        await loadBookingAmenities();
+
+        document.getElementById("bookingId").value = booking.booking_id;
+        document.getElementById("bookingAmenity").value = booking.amenity_id;
+        document.getElementById("bookingDate").value =
+            String(booking.booking_date).split("T")[0];
+        document.getElementById("bookingStartTime").value =
+            String(booking.start_time).slice(0,5);
+        document.getElementById("bookingEndTime").value =
+            String(booking.end_time).slice(0,5);
+
+        document.getElementById("bookingFormTitle").textContent = "Edit Booking";
+
+        document.querySelector("#amenityBookingForm button[type='submit']").textContent =
+            "Update Booking";
+
+        document.getElementById("cancelBookingEdit").style.display = "inline-block";
+
+        document.getElementById("amenityBookingForm").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+
+// Delete booking
+async function deleteAmenityBooking(id) {
+
+    if (!confirm("Are you sure you want to delete this booking?")) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+
+        const response = await fetch(`${BOOKING_API}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to delete booking");
+        }
+
+        alert(data.message);
+        await loadAmenityBookings();
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+
+// Reset booking form
+function resetAmenityBookingForm() {
+
+    document.getElementById("amenityBookingForm").reset();
+    document.getElementById("bookingId").value = "";
+
+    document.getElementById("bookingFormTitle").textContent = "Book an Amenity";
+
+    document.querySelector("#amenityBookingForm button[type='submit']").textContent =
+        "Book Amenity";
+
+    document.getElementById("cancelBookingEdit").style.display = "none";
+}
+
+
+// Sidebar navigation
+function showSection(sectionId, element) {
+
+    document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(sectionId).classList.add("active");
+
+    document.querySelectorAll(".sidebar a").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    if (element) {
+        element.classList.add("active");
+    }
+
+    const titles = {
+        dashboard: "Resident Dashboard",
+        profile: "My Profile",
+        apartment: "My Apartment",
+        family: "Family Members",
+        payments: "My Payments",
+        bills: "Maintenance Bills",
+        vehicles: "My Vehicles",
+        parking: "Parking Slots",
+        visitors: "My Visitors",
+        deliveries: "My Deliveries",
+        gym: "Gym Membership",
+        attendance: "Gym Attendance",
+        staff: "Apartment Staff",
+        complaints: "My Complaints",
+        amenities: "Amenities",
+        bookings: "Amenity Bookings"
+    };
+
+    document.getElementById("pageTitle").textContent =
+        titles[sectionId] || "Resident Dashboard";
+
+    // IMPORTANT: Load family members when section opens
+    if (sectionId === "family") {
+        loadFamilyMembers();
+    }
+    if (sectionId === "bills") {
+    loadMaintenanceBills();
+}
+    if (sectionId === "payments") {
+    loadPayments();
+}
+if (sectionId === "vehicles") {
+    loadVehicles();
+}
+if (sectionId === "parking") {
+    loadParkingSlots();
+}
+if (sectionId === "visitors") {
+    loadVisitors();
+}
+if (sectionId === "deliveries") {
+    loadDeliveries();
+}
+if (sectionId === "gym") {
+    loadGymMembership();
+}
+if (sectionId === "attendance") {
+    loadGymAttendance();
+}
+if (sectionId === "staff") {
+    loadStaff();
+}
+if (sectionId === "complaints") {
+    loadComplaints();
+}
+if (sectionId === "amenities") {
+    loadAmenities();
+}
+if (sectionId === "bookings") {
+    loadBookingAmenities();
+    loadAmenityBookings();
+}
+}
+
+
+function openSection(sectionId) {
+
+    const link = [...document.querySelectorAll(".sidebar a")]
+        .find(a => a.getAttribute("onclick")?.includes(`'${sectionId}'`));
+
+    showSection(sectionId, link);
+}
+
+// Logout
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>

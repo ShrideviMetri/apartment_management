@@ -1,398 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMS - Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS - Login</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f3f4f6;
-        }
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f3f4f6;
+    padding: 20px;
+}
 
-        .auth-container {
-            width: 400px;
-            background: white;
-            padding: 35px;
-            border-radius: 14px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-        }
+.auth-container {
+    width: 420px;
+    max-width: 100%;
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
 
-        .logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
 
-        .logo h1 {
-            color: #2563eb;
-            font-size: 30px;
-            margin-bottom: 6px;
-        }
+.logo h1 {
+    color: #2563eb;
+    font-size: 30px;
+    margin-bottom: 6px;
+}
 
-        .logo p {
-            color: #6b7280;
-            font-size: 14px;
-        }
+.logo p {
+    color: #6b7280;
+    font-size: 14px;
+}
 
-        .form-title {
-            font-size: 22px;
-            color: #1f2937;
-            margin-bottom: 20px;
-        }
+.form-title {
+    font-size: 22px;
+    color: #1f2937;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+.form-group {
+    margin-bottom: 16px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #374151;
-        }
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
 
-        input {
-            width: 100%;
-            padding: 12px 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 7px;
-            font-size: 14px;
-            outline: none;
-        }
+input {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    outline: none;
+}
 
-        input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
-        }
+input:focus {
+    border-color: #2563eb;
+}
 
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: none;
-            border-radius: 7px;
-            background: #2563eb;
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+.submit-btn, .role-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-        .submit-btn:hover {
-            background: #1d4ed8;
-        }
+.submit-btn:hover, .role-btn:hover {
+    background: #1d4ed8;
+}
 
-        .switch-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #6b7280;
-        }
+.role-btn {
+    margin-bottom: 12px;
+    padding: 18px;
+    font-size: 16px;
+}
 
-        .switch-text button {
-            border: none;
-            background: none;
-            color: #2563eb;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-        }
+.resident-btn {
+    background: #059669;
+}
 
-        .message {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-        }
+.resident-btn:hover {
+    background: #047857;
+}
 
-        .error {
-            color: #dc2626;
-        }
+.switch-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6b7280;
+}
 
-        .success {
-            color: #16a34a;
-        }
+.switch-text button {
+    border: none;
+    background: none;
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
 
-        #registerForm {
-            display: none;
-        }
-    </style>
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.success {
+    color: #16a34a;
+}
+
+.hidden {
+    display: none;
+}
+
+.back-btn {
+    border: none;
+    background: none;
+    color: #2563eb;
+    cursor: pointer;
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="auth-container">
+<div class="auth-container">
 
-        <div class="logo">
-            <h1>AMS</h1>
-            <p>Apartment Management System</p>
-        </div>
-
-        <!-- LOGIN FORM -->
-        <form id="loginForm">
-
-            <h2 class="form-title">Owner Login</h2>
-
-            <div class="form-group">
-                <label>Email or Phone</label>
-                <input
-                    type="text"
-                    id="login"
-                    placeholder="Enter email or phone"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="Enter password"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="submit-btn">
-                Login
-            </button>
-
-            <p class="switch-text">
-                Don't have an account?
-                <button type="button" onclick="showRegister()">
-                    Register
-                </button>
-            </p>
-
-        </form>
-
-
-        <!-- REGISTER FORM -->
-        <form id="registerForm">
-
-            <h2 class="form-title">Create Owner Account</h2>
-
-            <div class="form-group">
-                <label>Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Enter your name"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Phone</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter phone number"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input
-                    type="password"
-                    id="registerPassword"
-                    placeholder="Create a password"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="submit-btn">
-                Create Account
-            </button>
-
-            <p class="switch-text">
-                Already have an account?
-                <button type="button" onclick="showLogin()">
-                    Login
-                </button>
-            </p>
-
-        </form>
-
-        <div id="message" class="message"></div>
-
+    <div class="logo">
+        <h1>AMS</h1>
+        <p>Apartment Management System</p>
     </div>
 
+    <div id="message" class="message"></div>
 
-    <script>
+    <!-- LOGIN SELECTION -->
+    <div id="loginSelection">
+        <h2 class="form-title">Welcome Back!</h2>
+        <p style="text-align:center;color:#6b7280;margin-bottom:20px;">
+            Select your login type
+        </p>
 
-        const API = "https://apartment-management-fljl.onrender.com/api";
+        <button class="role-btn" onclick="showLogin('manager')">
+            Manager Login
+        </button>
 
+        <button class="role-btn resident-btn"
+                onclick="showLogin('resident')">
+            Resident Login
+        </button>
 
-        // ================= SHOW LOGIN =================
+        <p class="switch-text">
+            Don't have an account?
+            <button onclick="showRegisterSelection()">Register</button>
+        </p>
+    </div>
 
-        function showLogin() {
+    <!-- REGISTRATION ROLE SELECTION -->
+    <div id="registerSelection" class="hidden">
+        <button class="back-btn" onclick="showScreen('loginSelection')">
+            ← Back
+        </button>
 
-            document.getElementById("loginForm").style.display = "block";
-            document.getElementById("registerForm").style.display = "none";
+        <h2 class="form-title">Create Account</h2>
 
-            document.getElementById("message").textContent = "";
-        }
+        <button class="role-btn" onclick="showRegister('manager')">
+            Manager Registration
+        </button>
 
+        <button class="role-btn resident-btn"
+                onclick="showRegister('resident')">
+            Resident Registration
+        </button>
+    </div>
 
-        // ================= SHOW REGISTER =================
+    <!-- MANAGER REGISTRATION -->
+    <form id="managerRegisterForm" class="hidden">
+        <button type="button" class="back-btn"
+                onclick="showScreen('registerSelection')">
+            ← Back
+        </button>
 
-        function showRegister() {
+        <h2 class="form-title">Manager Registration</h2>
 
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("registerForm").style.display = "block";
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="managerName" required>
+        </div>
 
-            document.getElementById("message").textContent = "";
-        }
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="managerEmail" required>
+        </div>
 
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="managerPhone" required>
+        </div>
 
-        // ================= REGISTER =================
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="managerPassword"
+                   minlength="8" required>
+        </div>
 
-        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="managerConfirmPassword" required>
+        </div>
 
-            event.preventDefault();
+        <button type="submit" class="submit-btn">
+            Register as Manager
+        </button>
+    </form>
 
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-            const password = document.getElementById("registerPassword").value;
+    <!-- RESIDENT REGISTRATION -->
+    <form id="residentRegisterForm" class="hidden">
+        <button type="button" class="back-btn"
+                onclick="showScreen('registerSelection')">
+            ← Back
+        </button>
 
-            const message = document.getElementById("message");
+        <h2 class="form-title">Resident Registration</h2>
 
-            try {
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="residentName" required>
+        </div>
 
-                const response = await fetch(`${API}/auth/register`, {
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="residentEmail" required>
+        </div>
 
-                    method: "POST",
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="residentPhone" required>
+        </div>
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+        <div class="form-group">
+            <label>Apartment Number</label>
+            <input type="text" id="residentApartment" required>
+        </div>
 
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        phone,
-                        password
-                    })
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="residentPassword"
+                   minlength="8" required>
+        </div>
 
-                });
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="residentConfirmPassword" required>
+        </div>
 
-                const data = await response.json();
+        <button type="submit" class="submit-btn">
+            Register as Resident
+        </button>
+    </form>
 
-                if (response.ok) {
+    <!-- MANAGER LOGIN -->
+    <form id="managerLoginForm" class="hidden">
+        <button type="button" class="back-btn"
+                onclick="showScreen('loginSelection')">
+            ← Back
+        </button>
 
-                    message.textContent = data.message;
-                    message.className = "message success";
+        <h2 class="form-title">Manager Login</h2>
 
-                    document.getElementById("registerForm").reset();
+        <div class="form-group">
+            <label>Email or Phone</label>
+            <input type="text" id="managerLogin" required>
+        </div>
 
-                    setTimeout(() => {
-                        showLogin();
-                    }, 1200);
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="managerLoginPassword" required>
+        </div>
 
-                } else {
+        <button type="submit" class="submit-btn">Login</button>
 
-                    message.textContent = data.message;
-                    message.className = "message error";
-                }
+        <p class="switch-text">
+            Don't have an account?
+            <button type="button" onclick="showRegister('manager')">
+                Register
+            </button>
+        </p>
+    </form>
 
-            } catch (error) {
+    <!-- RESIDENT LOGIN -->
+    <form id="residentLoginForm" class="hidden">
+        <button type="button" class="back-btn"
+                onclick="showScreen('loginSelection')">
+            ← Back
+        </button>
 
-                console.error(error);
+        <h2 class="form-title">Resident Login</h2>
 
-                message.textContent = "Unable to connect to server.";
-                message.className = "message error";
-            }
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="residentLoginEmail" required>
+        </div>
 
+        <div class="form-group">
+            <label>Apartment Number</label>
+            <input type="text" id="residentLoginApartment" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="residentLoginPassword" required>
+        </div>
+
+        <button type="submit" class="submit-btn">Login</button>
+
+        <p class="switch-text">
+            Don't have an account?
+            <button type="button" onclick="showRegister('resident')">
+                Register
+            </button>
+        </p>
+    </form>
+
+</div>
+
+<script>
+const API = "https://apartment-management-fljl.onrender.com/api";
+//"https://apartment-management-fljl.onrender.com/api";
+const screens = [
+    "loginSelection",
+    "registerSelection",
+    "managerRegisterForm",
+    "residentRegisterForm",
+    "managerLoginForm",
+    "residentLoginForm"
+];
+
+function showScreen(screenId) {
+    screens.forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+    });
+
+    document.getElementById(screenId).classList.remove("hidden");
+    clearMessage();
+}
+
+function clearMessage() {
+    const message = document.getElementById("message");
+    message.textContent = "";
+    message.className = "message";
+}
+
+function showRegisterSelection() {
+    showScreen("registerSelection");
+}
+
+function showRegister(role) {
+    if (role === "manager") {
+        showScreen("managerRegisterForm");
+    } else {
+        showScreen("residentRegisterForm");
+    }
+}
+
+function showLogin(role) {
+    if (role === "manager") {
+        showScreen("managerLoginForm");
+    } else {
+        showScreen("residentLoginForm");
+    }
+}
+
+function showMessage(text, type) {
+    const message = document.getElementById("message");
+    message.textContent = text;
+    message.className = "message " + type;
+}
+
+async function sendRequest(endpoint, body) {
+    const response = await fetch(`${API}${endpoint}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+    }
+
+    return data;
+}
+
+// MANAGER REGISTRATION
+document.getElementById("managerRegisterForm")
+.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const password = document.getElementById("managerPassword").value;
+    const confirmPassword =
+        document.getElementById("managerConfirmPassword").value;
+
+    if (password !== confirmPassword) {
+        showMessage("Passwords do not match.", "error");
+        return;
+    }
+
+    try {
+        const data = await sendRequest("/auth/register-manager", {
+            name: document.getElementById("managerName").value.trim(),
+            email: document.getElementById("managerEmail").value.trim(),
+            phone: document.getElementById("managerPhone").value.trim(),
+            password
         });
 
+        showMessage(data.message + " Please choose Manager Login.",
+                    "success");
 
-        // ================= LOGIN =================
+        this.reset();
 
-        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        setTimeout(() => showScreen("loginSelection"), 1500);
 
-            event.preventDefault();
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+});
 
-            const login = document.getElementById("login").value;
-            const password = document.getElementById("loginPassword").value;
+// RESIDENT REGISTRATION
+document.getElementById("residentRegisterForm")
+.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-            const message = document.getElementById("message");
+    const password = document.getElementById("residentPassword").value;
+    const confirmPassword =
+        document.getElementById("residentConfirmPassword").value;
 
-            try {
+    if (password !== confirmPassword) {
+        showMessage("Passwords do not match.", "error");
+        return;
+    }
 
-                const response = await fetch(`${API}/auth/login`, {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        login,
-                        password
-                    })
-
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-
-                    // Save authentication information
-                    localStorage.setItem("token", data.token);
-                    localStorage.setItem("owner", JSON.stringify(data.owner));
-
-                    message.textContent = "Login successful. Opening dashboard...";
-                    message.className = "message success";
-
-                    setTimeout(() => {
-
-                        window.location.href = "index.html";
-
-                    }, 800);
-
-                } else {
-
-                    message.textContent = data.message;
-                    message.className = "message error";
-                }
-
-            } catch (error) {
-
-                console.error(error);
-
-                message.textContent = "Unable to connect to server.";
-                message.className = "message error";
-            }
-
+    try {
+        const data = await sendRequest("/auth/register-resident", {
+            name: document.getElementById("residentName").value.trim(),
+            email: document.getElementById("residentEmail").value.trim(),
+            phone: document.getElementById("residentPhone").value.trim(),
+            apartment_number:
+                document.getElementById("residentApartment").value.trim(),
+            password
         });
 
-    </script>
+        showMessage(data.message + " Please choose Resident Login.",
+                    "success");
+
+        this.reset();
+
+        setTimeout(() => showScreen("loginSelection"), 1500);
+
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+});
+
+// MANAGER LOGIN
+document.getElementById("managerLoginForm")
+.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    try {
+        const data = await sendRequest("/auth/login-manager", {
+            login: document.getElementById("managerLogin").value.trim(),
+            password:
+                document.getElementById("managerLoginPassword").value
+        });
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.removeItem("owner");
+
+        showMessage("Manager login successful!", "success");
+
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 700);
+
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+});
+
+// RESIDENT LOGIN
+document.getElementById("residentLoginForm")
+.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    try {
+        const data = await sendRequest("/auth/login-resident", {
+            email:
+                document.getElementById("residentLoginEmail").value.trim(),
+            apartment_number:
+                document.getElementById("residentLoginApartment").value.trim(),
+            password:
+                document.getElementById("residentLoginPassword").value
+        });
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.removeItem("owner");
+
+        showMessage("Resident login successful!", "success");
+
+        setTimeout(() => {
+            window.location.href = "resident.html";
+        }, 700);
+
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+});
+
+showScreen("loginSelection");
+</script>
 
 </body>
 </html>
