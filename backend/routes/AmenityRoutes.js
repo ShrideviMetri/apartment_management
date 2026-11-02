@@ -4,7 +4,7 @@ const db = require("../db");
 
 // GET all amenities
 router.get("/", (req, res) => {
-    const sql = "SELECT * FROM Amenity";
+    const sql = "SELECT * FROM amenity";
 
     db.query(sql, (err, results) => {
         if (err) {
