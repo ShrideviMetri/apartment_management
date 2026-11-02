@@ -1,6 +1,32 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const jwt = require("jsonwebtoken");
+
+function verifyResident(req, res, next) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Access denied" });
+    }
+
+    try {
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (decoded.role !== "resident") {
+            return res.status(403).json({
+                message: "Resident access only"
+            });
+        }
+
+        req.residentId = decoded.resident_id;
+        next();
+
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+}
 
 // GET all attendance
 router.get("/", (req, res) => {
@@ -18,6 +44,152 @@ router.get("/", (req, res) => {
     });
 });
 
+
+// GET logged-in resident's attendance history
+router.get("/my", verifyResident, (req, res) => {
+
+    const sql = `
+        SELECT attendance_id, resident_id, membership_id,
+               check_in, check_out
+        FROM gymattendance
+        WHERE resident_id = ?
+        ORDER BY check_in DESC
+    `;
+
+    db.query(sql, [req.residentId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: "Failed to fetch attendance history"
+            });
+        }
+
+        res.json(results);
+    });
+});
+
+
+// RESIDENT CHECK-IN
+router.post("/my/check-in", verifyResident, (req, res) => {
+
+    // Check whether resident already has an open session
+    const openSessionSql = `
+        SELECT attendance_id
+        FROM gymattendance
+        WHERE resident_id = ?
+        AND check_out IS NULL
+        LIMIT 1
+    `;
+
+    db.query(openSessionSql, [req.residentId], (err, sessions) => {
+
+        if (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: "Failed to check existing attendance"
+            });
+        }
+
+        if (sessions.length > 0) {
+            return res.status(400).json({
+                message: "You are already checked in. Please check out first."
+            });
+        }
+
+        // Find active and paid membership
+        const membershipSql = `
+            SELECT membership_id
+            FROM gymmembership
+            WHERE resident_id = ?
+              AND status = 'Active'
+              AND payment_status = 'Completed'
+              AND start_date <= CURRENT_DATE
+              AND end_date >= CURRENT_DATE
+            ORDER BY membership_id DESC
+            LIMIT 1
+        `;
+
+        db.query(membershipSql, [req.residentId], (err, memberships) => {
+
+            if (err) {
+                console.error(err);
+                return res.status(500).json({
+                    message: "Failed to verify gym membership"
+                });
+            }
+
+            if (memberships.length === 0) {
+                return res.status(400).json({
+                    message: "You need an active paid gym membership to check in."
+                });
+            }
+
+            const membershipId = memberships[0].membership_id;
+
+            const insertSql = `
+                INSERT INTO gymattendance
+                (resident_id, membership_id, check_in, check_out)
+                VALUES (?, ?, CURRENT_TIMESTAMP, NULL)
+            `;
+
+            db.query(
+                insertSql,
+                [req.residentId, membershipId],
+                (err, result) => {
+
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({
+                            message: "Check-in failed"
+                        });
+                    }
+
+                    res.status(201).json({
+                        message: "Gym check-in successful!",
+                        attendance_id: result.insertId
+                    });
+                }
+            );
+        });
+    });
+});
+
+
+// RESIDENT CHECK-OUT
+router.put("/my/:id/check-out", verifyResident, (req, res) => {
+
+    const sql = `
+        UPDATE gymattendance
+        SET check_out = CURRENT_TIMESTAMP
+        WHERE attendance_id = ?
+          AND resident_id = ?
+          AND check_out IS NULL
+    `;
+
+    db.query(
+        sql,
+        [req.params.id, req.residentId],
+        (err, result) => {
+
+            if (err) {
+                console.error(err);
+                return res.status(500).json({
+                    message: "Check-out failed"
+                });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(400).json({
+                    message: "Attendance record not found or already checked out"
+                });
+            }
+
+            res.json({
+                message: "Gym check-out successful!"
+            });
+        }
+    );
+});
 
 // POST attendance
 router.post("/", (req, res) => {

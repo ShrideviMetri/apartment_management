@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const jwt = require("jsonwebtoken");
 
 // GET all visitors
 router.get("/", (req, res) => {
@@ -18,6 +19,62 @@ router.get("/", (req, res) => {
     });
 });
 
+// GET logged-in resident's visitors
+router.get("/my", (req, res) => {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+            message: "Authentication token required"
+        });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (decoded.role !== "resident") {
+            return res.status(403).json({
+                message: "Access denied"
+            });
+        }
+
+        const sql = `
+            SELECT
+                visitor_id,
+                resident_id,
+                visitor_name,
+                phone,
+                purpose,
+                vehicle_number,
+                entry_time,
+                exit_time
+            FROM visitor
+            WHERE resident_id = ?
+            ORDER BY entry_time DESC
+        `;
+
+        db.query(sql, [decoded.resident_id], (err, results) => {
+
+            if (err) {
+                console.error("Resident visitors error:", err);
+
+                return res.status(500).json({
+                    message: "Failed to fetch visitors"
+                });
+            }
+
+            res.json(results);
+        });
+
+    } catch (err) {
+        return res.status(401).json({
+            message: "Invalid or expired token"
+        });
+    }
+});
 
 // POST visitor
 router.post("/", (req, res) => {

@@ -1,6 +1,37 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const jwt = require("jsonwebtoken");
+
+// Verify resident token
+function verifyResident(req, res, next) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+            message: "Authentication token required"
+        });
+    }
+
+    try {
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (decoded.role !== "resident") {
+            return res.status(403).json({
+                message: "Access denied"
+            });
+        }
+
+        req.residentId = decoded.resident_id;
+        next();
+
+    } catch (error) {
+        return res.status(401).json({
+            message: "Invalid or expired token"
+        });
+    }
+}
 
 // GET all deliveries
 router.get("/", (req, res) => {
@@ -11,6 +42,26 @@ router.get("/", (req, res) => {
             console.error(err);
             return res.status(500).json({
                 message: "Failed to fetch deliveries"
+            });
+        }
+
+        res.json(results);
+    });
+});
+
+router.get("/my", verifyResident, (req, res) => {
+    const sql = `
+        SELECT *
+        FROM delivery
+        WHERE resident_id = ?
+        ORDER BY arrival_time DESC
+    `;
+
+    db.query(sql, [req.residentId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: "Failed to fetch your deliveries"
             });
         }
 
@@ -65,6 +116,62 @@ router.post("/", (req, res) => {
     });
 });
 
+
+// Get logged-in resident's deliveries
+router.get("/my", verifyResident, (req, res) => {
+    const sql = `
+        SELECT * FROM delivery
+        WHERE resident_id = ?
+        ORDER BY arrival_time DESC
+    `;
+
+    db.query(sql, [req.residentId], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Failed to fetch deliveries" });
+        }
+
+        res.json(results);
+    });
+});
+
+
+// Update delivery status
+router.put("/my/:id/status", verifyResident, (req, res) => {
+    const { status } = req.body;
+
+    if (!["Pending", "Received"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const sql = `
+        UPDATE delivery
+        SET status = ?,
+            collected_time = ?
+        WHERE delivery_id = ? AND resident_id = ?
+    `;
+
+    const collectedTime = status === "Received"
+        ? new Date()
+        : null;
+
+    db.query(
+        sql,
+        [status, collectedTime, req.params.id, req.residentId],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Failed to update status" });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: "Delivery not found" });
+            }
+
+            res.json({ message: "Status updated successfully" });
+        }
+    );
+});
 
 // GET delivery by ID
 router.get("/:id", (req, res) => {
